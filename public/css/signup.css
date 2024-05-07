@@ -1,0 +1,14 @@
+input.error{
+    color: red;
+    font-size: 14px;
+    padding-top: 5px;
+}
+
+.input .error input{
+    background-color: red;
+}
+
+.input .success input{
+    background-color: green;
+}
+

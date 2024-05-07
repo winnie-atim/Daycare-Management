@@ -1,0 +1,50 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' crossorigin='anonymous')
+    link(href='../css/index.css' rel='stylesheet')
+    title Document
+  body
+    section.baby-section
+      .main-heading
+        h3.header Daystar day care system
+      .main-card
+        .card.mycard(style='width: 25rem;')
+          .card-body
+            p.card-text
+              form#formId(name='baby' action='/api/babyregister' method='POST')
+                .mb-3
+                  input#babyname.form-control(type='text' placeholder='Baby Name' name='babyname' aria-describedby='babyname')
+                .row.mb-3
+                  .col
+                    select.form-select(aria-label='Default select example' name='gender')
+                      option(selected='') Gender
+                      option(value='female') Female
+                      option(value='male') Male
+                  .col
+                    input.form-control(type='number' placeholder='Age' aria-label='age' name='age')
+                .mb-3
+                  input#location.form-control(type='text' placeholder='Location' aria-describedby='location' name='location')
+                .mb-3
+                  input#nameofguardian.form-control(type='text' placeholder='Name of Guardian' aria-describedby='nameofguardian' name='nameofguardian')
+                .row.mb-3
+                  .col
+                    input.form-control(type='time' placeholder='Time of Arrival' aria-label='time' name='time')
+                  .col
+                    input.form-control(type='number' placeholder='Baby Number' aria-label='babynumber' name='babynumber')
+                select.form-select(aria-label='Default select example' name='period')
+                  option(selected='') Choose Period
+                  option(value='1') Half Day
+                  option(value='2') Full Day
+                br.mb-3
+                select.form-select(aria-label='Default select example' name='fee')
+                  option(selected='') Choose Fee
+                  option(value='1') 10000
+                  option(value='2') 15000
+                br
+                // Button added to the top right
+                .d-flex.justify-content-end
+                  button.btn.btn-primary(type='submit') Register Baby
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' crossorigin='anonymous')

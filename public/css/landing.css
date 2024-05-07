@@ -1,0 +1,48 @@
+.hero-image{
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+  
+}
+
+hero design
+.hero-section{
+    background-color: #38456B;
+    width: 50%;
+    height: 110px;
+    margin-left: 330px;
+}
+
+.daystar{
+    font-size: 80px;
+    margin-left: 50px;
+    color: #38456B;
+    font-family: alconica;
+    font-weight: bolder;
+    max-width: 600px;
+}
+
+
+.hero-button{
+    background-color: #900C3F;
+    border-radius: 20px;
+    width: 250px;
+    height: 50px;
+    margin-left: 50px;
+    color: hsla(39, 93%, 95%, 1);
+    font-weight: bolder;
+}
+
+.button{
+    font-size: 30px;
+    color: hsla(39, 93%, 95%, 1);
+    text-decoration: none;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    align-items: center;
+    justify-content: center;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+

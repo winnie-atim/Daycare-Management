@@ -1,0 +1,90 @@
+
+.main-heading {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: #900C3F;
+    height: 70px;
+  }
+
+  .header{
+    padding-top: 20px;
+    color: beige;
+  }
+  
+  .mytable {
+    width: 90%;
+    border-collapse: collapse;
+    margin-left: 50px;
+  }
+  
+  .mytable th {
+    background-color: #a63d65;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .mytable td, .mytable th {
+    border: 1px solid #dee2e6;
+    padding: 8px;
+    color: #000;
+  }
+  
+
+
+
+  .mytable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .mydeletebtn {
+    background-color: #900c3f;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100px;
+    font-size: 10px;
+    text-decoration: none;
+  }
+  
+  .mybtn {
+    background-color: #fcbf49;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100px;
+    font-size: 10px;
+    text-decoration: none;
+
+  }
+  
+  .mydeletebtn:hover, .mybtn:hover {
+    opacity: 0.8;
+  }
+
+
+.addbutton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #900c3f; 
+    color: #fff; 
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    margin: 10px 50px;
+  }
+  
+  .addbutton:hover {
+    background-color: #0056b3; 
+    color: #fff;
+  }
+
+  .search-container{
+    margin-top: 40px;
+  }
+   

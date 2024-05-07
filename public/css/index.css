@@ -1,0 +1,153 @@
+.root{
+    color: #38456B;
+    color: hsla(39, 93%, 95%, 1);
+    color: #3F7BC2;
+
+    font-family: alcnica;
+}
+
+
+
+
+/* landing page designs */
+.main-heading{
+    background-color: #900C3F;
+    height: 60px;
+    padding-top: 10px;
+}
+
+.header{
+    align-items: center;
+    justify-content: center;
+    padding-left: 38%;
+    text-transform: uppercase;
+    color: hsla(39, 93%, 95%, 1);
+}
+
+
+
+/* login page */
+.nav-menu{
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #3F7BC2;
+    border-radius: 10px;
+    width: 100px;
+}
+
+.daystar{
+    color: rgb(35, 135, 174);
+}
+
+
+
+
+
+/* admin login designs */
+.mycard{
+    margin: 2opx auto;
+    margin-left: 440px;
+    margin-top: 30px;
+
+}
+
+.login-title{
+    margin-left: 600px;
+    margin-top: 100px;
+    font-family: sans-serif;
+    font-family: alcnica;
+    font-size: 25px;
+    color: rgb(35, 135, 174);
+
+
+}
+
+.btn{
+    background-color: #900c3f;
+    width: 370px;
+    color: hsla(39, 93%, 95%, 1);
+}
+
+
+.btn:hover{
+    background-color: #b15579;
+    width: 370px;
+    color: hsla(39, 93%, 95%, 1);
+}
+
+
+
+/* baby form designs */
+.form-header{
+    display: flex;
+    justify-content: space-between;
+    font-size: 60px;
+    padding-left: 75px;
+    padding-right: 60px;
+    padding-top: 45px;
+}
+
+.form-header h6{
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+.baby-section{
+    background-color: #afb5c4;
+}
+
+.main-card{
+    padding-bottom: 40px;
+}
+
+.input{
+    font-weight: bold;
+}
+
+
+
+/* Admin Dashboard */
+.admin-card{
+    height: 130px;
+    margin-top: 30px;
+    margin-left: 30px;
+    background-color: #65082c;
+}
+
+.Admin-container{
+    display: flex;
+    margin-left:130px;
+    margin-top:50px;
+
+}
+.Admin-dashboard{
+    background-color: #c3c7d3;
+    height: 100vh;
+}
+
+.my-icon{
+    font-size: 45px;
+    color: #FFC300;
+    margin-left: 100px;
+
+}
+
+
+.admin-role{
+    font-family: alcnica;
+    margin-top: 20px;
+    margin-left: 50px;
+    padding-bottom: 50px;
+    color: bisque;
+    font-size: 23px;
+}
+
+.admin-role h5{
+    text-decoration: none;
+
+}
+
+
+
+
+

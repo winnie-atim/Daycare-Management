@@ -1,0 +1,66 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC' crossorigin='anonymous')
+  link(href='../css/index.css' rel='stylesheet')
+  title Document
+// heading section
+section.baby-section
+  .main-heading
+    h3.header Daystar day care system
+  // form section
+  //- h5.card-title.login-title Sitters Page
+  .main-card
+    .card.mycard(style='width: 25rem;')
+      .card-body
+        p.card-text
+          form#formId(name='sitter' action='/api/regsitter' method='POST')
+            .mb-3
+              input#sittername.form-control(type='text' placeholder='Sitter Name' aria-describedby='sittername' name='sittername')
+            .row
+              .col
+                input.form-control(type='date' placeholder='DOB' aria-label='DOB' name='dob')
+              .col
+                select.form-select(aria-label='Default select example' name='gender')
+                  option(selected='') Gender
+                  option(value='female') Female
+                  option(value='male') Male
+            br
+            .mb-3
+              input#location.form-control(type='text' placeholder='Location' aria-describedby='location' name='location')
+            .mb-3
+              input#recommendersname.form-control(type='text' placeholder="Recommender's Name" aria-describedby='recommendersname' name='recommendersname')
+            .row
+              .col
+                input.form-control(type='text' placeholder='NIN' aria-label='NIN' name='nin')
+              .col
+                select.form-select(aria-label='Default select example' name='religion')
+                  option(selected='') Religion
+                  option(value='catholic') Catholic
+                  option(value='islam') Islam
+                  option(value='adventist') Adventist
+                  option(value='anglican') Anglican
+                  option(value='other') Other
+              br
+              br
+            .mb-3
+              select.form-select(aria-label='Default select example' name='levelofeducation')
+                option(selected='') Level Of Education
+                option(value='high school') High school
+                option(value='certificate') Certificate
+                option(value='diploma') Diploma
+                option(value='degree') Degree
+                option(value='masters') Masters
+                option(value='other') Other
+            .row
+              .col
+                input.form-control(type='number' placeholder='Contacts' aria-label='contacts' name='contacts')
+              .col
+                input.form-control(type='number' placeholder='Sitter Number' aria-label='sitternumber' name='sittername')
+              br
+              br
+              .mb-3
+                input#nextofkin.form-control(type='text' placeholder='Next of Kin' aria-describedby='nextofin' name='nextofkin')
+              button.btn.btn-primary(type='submit') Register Sitter
+script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM' crossorigin='anonymous')
