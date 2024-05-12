@@ -1,0 +1,15 @@
+fastapi 
+bcrypt==4.0.1
+uvicorn
+alembic
+sqlalchemy
+psycopg2-binary
+httpx
+passlib[bcrypt]
+python-jose
+secure-smtplib==0.1.1
+python-dotenv==1.0.1
+requests
+watchgod
+APScheduler
+python-multipart
