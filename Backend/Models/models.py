@@ -207,6 +207,8 @@ class PresentSitter(Base):
     sitter_id = Column(Integer, ForeignKey('sitter.id'))
     date = Column(DateTime)
 
+    sitter = relationship("Sitter", backref="present_sitters")
+
 class ProcurementItem(Base):
     __tablename__ = 'procurement_item'
     id = Column(Integer, primary_key=True, index=True)

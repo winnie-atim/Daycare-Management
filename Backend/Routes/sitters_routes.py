@@ -3,7 +3,9 @@ from Connections.connections import SessionLocal
 from sqlalchemy.orm import Session
 
 from Controllers.sitters_controller import (
-    create_sitter
+    create_sitter,
+    present_sitter,
+    get_all_present_sitters
 )
 
 router = APIRouter()
@@ -25,6 +27,29 @@ async def create_sitter_route(sitter: dict, db: Session = Depends(get_db)):
         created_sitted =  await create_sitter(db, sitter)
         if created_sitted:
             return {"message": "Sitter created successfully", "status": 200, "data": created_sitted}
+        else:
+            raise HTTPException(status_code=400, detail="An error occurred")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+
+@router.post("/present_sitter/")
+async def present_sitter_route(sitter_id: int, db: Session = Depends(get_db)):
+    
+    try:
+        present = present_sitter(db, sitter_id)
+        if present:
+            return present
+        else:
+            raise HTTPException(status_code=400, detail="An error occurred")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+@router.get("/get_all_present_sitters")
+async def get_all_present_sitters_route(db: Session = Depends(get_db)):
+    try:
+        present_sitters = get_all_present_sitters(db)
+        if present_sitters:
+            return present_sitters
         else:
             raise HTTPException(status_code=400, detail="An error occurred")
     except Exception as e:

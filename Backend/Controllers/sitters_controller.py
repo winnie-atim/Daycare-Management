@@ -1,6 +1,6 @@
-from Models.models import Sitter, DailyPayment
+from Models.models import Sitter, DailyPayment, PresentSitter
 from fastapi import APIRouter, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from datetime import datetime
 async def create_sitter(db_session: Session, sitter: dict):
     try:
@@ -43,6 +43,32 @@ def paysitter(db: Session, sitter_id: int):
             sitter.payment_date = datetime.now()
             sitter.is_paid = True
             db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+
+def present_sitter(db: Session, sitter_id: int):
+    print(f"Presenting sitter with id: {sitter_id}")
+    try:
+        new_present = PresentSitter(sitter_id=sitter_id, date=datetime.now())
+
+        db.add(new_present)
+        db.commit()
+        return {
+            "message": "Sitter marked present",
+            "status_code": 200
+        }
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+def get_all_present_sitters(db: Session):
+    print("Getting all present sitters")
+    try:
+        present_sitters = (db.query(PresentSitter).all())
+        return {"data": present_sitters}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
