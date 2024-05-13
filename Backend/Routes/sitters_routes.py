@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from Controllers.sitters_controller import (
     create_sitter,
     present_sitter,
-    get_all_present_sitters
+    get_all_present_sitters,
+    update_when_paid
 )
 
 router = APIRouter()
@@ -34,7 +35,6 @@ async def create_sitter_route(sitter: dict, db: Session = Depends(get_db)):
 
 @router.post("/present_sitter/")
 async def present_sitter_route(sitter_id: int, db: Session = Depends(get_db)):
-    
     try:
         present = present_sitter(db, sitter_id)
         if present:
@@ -50,6 +50,17 @@ async def get_all_present_sitters_route(db: Session = Depends(get_db)):
         present_sitters = get_all_present_sitters(db)
         if present_sitters:
             return present_sitters
+        else:
+            raise HTTPException(status_code=400, detail="An error occurred")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+@router.put("/update_payment/")
+async def update_payment_route(sitter_id: int, db: Session = Depends(get_db)):
+    try:
+        updated_payment = update_when_paid(db, sitter_id)
+        if updated_payment:
+            return updated_payment
         else:
             raise HTTPException(status_code=400, detail="An error occurred")
     except Exception as e:

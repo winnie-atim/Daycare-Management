@@ -24,6 +24,7 @@ app.include_router(sitters_routes.router, prefix="/sitters")#, tags=["Sitters"])
 app.include_router(baby_routes.router, prefix="/babies")#, tags=["Babies"])
 app.include_router(admin_routes.router, prefix="/admins")#, tags=["Admins"])
 app.include_router(auth_routes.router, prefix="/auth")#, tags=["Auth"])
+
 if __name__ == "__main__":
     import uvicorn
     from watchgod import watch 
