@@ -2,6 +2,7 @@ from Models.models import Baby,BabyRelease
 from fastapi import APIRouter, HTTPException
 from sqlalchemy.orm import Session
 from Controllers.sitters_controller import update_baby_number
+
 def automate_by_fee(new_baby):
     if new_baby.fee == 15000:
         new_baby.duration = 'full_day'
@@ -79,3 +80,15 @@ def relaese_baby(db: Session, baby_data):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+def get_all_babies(db: Session):
+    print("""Getting all babies""")
+    babies = db.query(Baby).all()
+    if babies:
+        return {
+            "message": "Babies retrieved successfully",
+            "status_code": 200,
+            "data": {"data": babies}
+        }
+    else:
+        raise HTTPException(status_code=400, detail="An error occurred")

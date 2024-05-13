@@ -67,7 +67,7 @@ def present_sitter(db: Session, sitter_id: int):
 def get_all_present_sitters(db: Session):
     print("Getting all present sitters")
     try:
-        present_sitters = (db.query(PresentSitter).all())
+        present_sitters = (db.query(PresentSitter).options(joinedload(PresentSitter.sitter)).all())
         return {"data": present_sitters}
     except Exception as e:
         db.rollback()

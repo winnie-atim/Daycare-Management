@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 from Controllers.baby_controller import (
     create_baby_controller,
     update_baby,
-    relaese_baby
+    relaese_baby,
+    get_all_babies
 )
 
 router = APIRouter()
@@ -37,6 +38,17 @@ async def update_existing_baby(baby_data: dict, db: Session = Depends(get_db)):
         updated_baby = update_baby(db, baby_data)
         if updated_baby:
             return updated_baby
+        else:
+            raise HTTPException(status_code=400, detail="An error occurred")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+@router.get("/get_all_babies")
+async def get_all_babies_route(db: Session = Depends(get_db)):
+    try:
+        babies = get_all_babies(db)
+        if babies:
+            return babies
         else:
             raise HTTPException(status_code=400, detail="An error occurred")
     except Exception as e:
