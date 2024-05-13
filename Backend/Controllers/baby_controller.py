@@ -92,3 +92,16 @@ def get_all_babies(db: Session):
         }
     else:
         raise HTTPException(status_code=400, detail="An error occurred")
+    
+def get_baby_by_access(db: Session, baby_access: str):
+    print(f"""Getting baby with access: {baby_access}""")
+    baby = db.query(Baby).filter_by(baby_access=baby_access).first()
+    if baby:
+        return {
+            "message": "Baby retrieved successfully",
+            "status_code": 200,
+            "data": baby
+        }
+    else:
+        raise HTTPException(status_code=400, detail="An error occurred")
+    
