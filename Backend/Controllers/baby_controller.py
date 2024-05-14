@@ -1,8 +1,8 @@
-from Models.models import Baby,BabyRelease
+from Models.models import Baby, BabyRelease, PresentBaby
 from fastapi import APIRouter, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from Controllers.sitters_controller import update_baby_number
-
+from datetime import datetime
 def automate_by_fee(new_baby):
     if new_baby.fee == 15000:
         new_baby.duration = 'full_day'
@@ -105,3 +105,28 @@ def get_baby_by_access(db: Session, baby_access: str):
     else:
         raise HTTPException(status_code=400, detail="An error occurred")
     
+def add_baby_to_present(db: Session, baby_id: int):
+    print("""Adding baby to present""")
+    try:
+        present_baby = PresentBaby(baby_id=baby_id, date=datetime.now())
+        db.add(present_baby)
+        db.commit()
+        return {
+            "message": "Baby added to present successfully",
+            "status_code": 200
+        }
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+def get_present_babies(db: Session):
+    print("""Getting present babies""")
+    present_babies = (db.query(PresentBaby).options(joinedload(PresentBaby.baby))).all()
+    if present_babies:
+        return {
+            "message": "Babies retrieved successfully",
+            "status_code": 200,
+            "data": {"data": present_babies}
+        }
+    else:
+        raise HTTPException(status_code=400, detail="An error occurred")
