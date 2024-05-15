@@ -3,66 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="../css/index.css"  rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../public/css/index.css"  rel="stylesheet"/>
+    <style>
+      body, html {
+          font-family: 'Arial', sans-serif;
+          height: 100%; 
+          margin: 0; 
+          padding: 0;
+          overflow: hidden; 
+          /* justify-content: center;
+          align-items: center; */
+      }
+  
+      .navbar {
+          border-radius: 30px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          background-color: #900c3f !important;
+          color: yellow;
+          
+          margin: 12px 10px;
+          padding: 0 20px;
+          height: 90px; 
+      }
+      #sidebarMenu {
+          border-radius: 20px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          background-color: #1511e3 !important;
+          margin: 10px;
+          padding-top: 10px;
+          width: 250px; 
+          height: calc(100vh - 20px);
+          float: left; 
+          overflow-y: auto; 
+      }
+      .main-content {
+          margin-left: 270px; 
+          width: calc(100% - 270px);
+          height: calc(100vh - 24px);
+          overflow-y: auto;
+          padding: 10px;
+          box-sizing: border-box;
+      }
+      #nav-text{
+        color:  yellow;
+        size: yello;
+      }
+      #sidebar-items{
+        background-color: #1511e3 !important;
+        color:  white;
+        height: 60px; 
+      }
+      #sidebar-items:hover {
+    background-color: #504df6 !important; 
+    color: rgb(251, 251, 2); 
+}
+  </style>
     <title>Admin Dashboard</title>
 </head>
 <body>
-    <!-- heading section -->
-    <section class="Admin-dashboard">
-        <div class="main-heading">
-            <h3 class="header">Daystar day care system</h3>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" id = "nav-text" href="#">Daystar Day Care System</a>
+            <div class="d-flex align-items-center">
+                <img src="path/to/admin_icon.jpg" alt="Admin" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
         </div>
+    </nav>
 
-
-        <!-- Admin tabs -->
-        <div class="Admin-container">
-            <div class="card admin-card" style="width: 18rem;">
-                <a href="babiesform.html">
-                    <div class="card-body">
-                        <span><i class="fa-solid fa-baby my-icon"></i></span>
-                      <h5 class="card-title admin-role">Register Baby</h5>
-                    </div>
-                </a>
-              </div>
-            <div class="card admin-card" style="width: 18rem;">
-                <div class="card-body">
-                    <span><i class="fa-solid fa-cart-flatbed  my-icon"></i></span>
-                  <h5 class="card-title admin-role">Register Babysitter</h5>
-                </div>
-              </div>
-            <div class="card admin-card" style="width: 18rem;">
-                <div class="card-body">
-                    <span><i class="fa-solid fa-money-check-dollar my-icon"></i></span>
-                  <h5 class="card-title admin-role">Payment Monitor</h5>
-                </div>
-              </div>
+    <div class="d-flex">
+        <div class="bg-light" id="sidebarMenu" style="width: 250px;">
+            <div class="list-group list-group-flush my-3">
+                <a href="babiesform.html" class="list-group-item list-group-item-action bg-light"  id = "sidebar-items">Register Baby</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light" id = "sidebar-items">Register Babysitter</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light"  id = "sidebar-items">Payment Monitor</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light"  id = "sidebar-items">Data Tracker</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light" id = "sidebar-items">Procurement Corner</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light"  id = "sidebar-items">Logout</a>
+            </div>
         </div>
-        <div class="Admin-container">
-            <div class="card admin-card" style="width: 18rem;">
-                <div class="card-body">
-                    <span><i class="fa-solid fa-file-shield my-icon"></i></span>
-                  <h5 class="card-title admin-role">Data Tracker</h5>
+        <div class="p-4 w-100">
+            <h1>Welcome to the Admin Dashboard</h1>
+            <div class="Admin-container">
+              <div class="card admin-card" style="width: 18rem;">
+                  <a href="babiesform.html">
+                      <div class="card-body">
+                          <span><i class="fa-solid fa-baby my-icon"></i></span>
+                        <h5 class="card-title admin-role">Register Baby</h5>
+                      </div>
+                  </a>
                 </div>
-              </div>
-            <div class="card admin-card" style="width: 18rem;">
-                <div class="card-body">
-                    <span><i class="fa-solid fa-person-dress my-icon"></i></span>
-                  <h5 class="card-title admin-role">Procurement Corner</h5>
+              <div class="card admin-card" style="width: 18rem;">
+                  <div class="card-body">
+                      <span><i class="fa-solid fa-cart-flatbed  my-icon"></i></span>
+                    <h5 class="card-title admin-role">Register Babysitter</h5>
+                  </div>
                 </div>
-              </div>
-            <div class="card admin-card" style="width: 18rem;">
-                <div class="card-body">
-                    <span><i class="fa-solid fa-right-from-bracket my-icon"></i></span>
-                  <h5 class="card-title admin-role">Logout</h5>
+              <div class="card admin-card" style="width: 18rem;">
+                  <div class="card-body">
+                      <span><i class="fa-solid fa-money-check-dollar my-icon"></i></span>
+                    <h5 class="card-title admin-role">Payment Monitor</h5>
+                  </div>
                 </div>
-              </div>
+          </div>
+          <div class="Admin-container">
+              <div class="card admin-card" style="width: 18rem;">
+                  <div class="card-body">
+                      <span><i class="fa-solid fa-file-shield my-icon"></i></span>
+                    <h5 class="card-title admin-role">Data Tracker</h5>
+                  </div>
+                </div>
+              <div class="card admin-card" style="width: 18rem;">
+                  <div class="card-body">
+                      <span><i class="fa-solid fa-person-dress my-icon"></i></span>
+                    <h5 class="card-title admin-role">Procurement Corner</h5>
+                  </div>
+                </div>
+              <div class="card admin-card" style="width: 18rem;">
+                  <div class="card-body">
+                      <span><i class="fa-solid fa-right-from-bracket my-icon"></i></span>
+                    <h5 class="card-title admin-role">Logout</h5>
+                  </div>
+                </div>
+          </div>
+         
         </div>
-       
-       
+    </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/8bd93dfcff.js" crossorigin="anonymous"></script>
 </body>
 </html>

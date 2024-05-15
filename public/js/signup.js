@@ -34,11 +34,11 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log("Success:", data);
             alert ("Account created successfully.");
-            // Handle success here (e.g., displaying a success message, redirecting, etc.)
+            // Handling success here (e.g., displaying a success message, redirecting, etc.)
         })
         .catch((error) => {
             console.error('Error:', error);
-            // Handle errors here (e.g., displaying error messages)
+            // Handling errors here (e.g., displaying error messages)
         });
     });
 

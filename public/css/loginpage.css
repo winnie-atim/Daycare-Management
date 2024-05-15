@@ -69,3 +69,12 @@ a:hover {
 .login-link {
     margin-top: 20px;
 }
+
+.form-container-sitter {
+    max-width: 900px; /* Increase width */
+    margin: 20px auto; /* Centering the form */
+    padding: 20px;
+    border: 1px solid #ccc; /* Optional: adds a border */
+    border-radius: 10px; /* Optional: rounds the corners */
+    background-color: #f8f9fa; /* Optional: background color */
+}
