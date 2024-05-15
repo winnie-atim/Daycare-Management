@@ -3,6 +3,9 @@ from fastapi import APIRouter, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from Controllers.sitters_controller import update_baby_number
 from datetime import datetime
+from sqlalchemy.exc import SQLAlchemyError
+from typing import List, Dict, Any
+
 def automate_by_fee(new_baby):
     if new_baby.fee == 15000:
         new_baby.duration = 'full_day'
@@ -119,14 +122,42 @@ def add_baby_to_present(db: Session, baby_id: int):
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
     
-def get_present_babies(db: Session):
-    print("""Getting present babies""")
-    present_babies = (db.query(PresentBaby).options(joinedload(PresentBaby.baby))).all()
-    if present_babies:
-        return {
-            "message": "Babies retrieved successfully",
-            "status_code": 200,
-            "data": {"data": present_babies}
-        }
-    else:
-        raise HTTPException(status_code=400, detail="An error occurred")
+def serialize_baby(baby: Baby) -> Dict[str, Any]:
+    """ Serialize the Baby object to a dictionary. """
+    return {
+        "id": baby.id,
+        "name": baby.name,
+        "gender": baby.gender,
+        "age": baby.age,
+        "location": baby.location,
+        "name_of_brought_person": baby.name_of_brought_person,
+        "time_of_arrival": str(baby.time_of_arrival),
+        "name_of_parent": baby.name_of_parent,
+        "fee": baby.fee,
+        "duration": baby.duration,
+        "is_monthly": baby.is_monthly,
+        "payment_type": baby.payment_type,
+        "baby_access": baby.baby_access,
+        "date": baby.date.isoformat(),
+        "sitter_assigned": baby.sitter_assigned
+    }
+
+def get_present_babies(db: Session) -> Dict[str, Any]:
+    print("Getting present babies")
+    try:
+        present_babies = db.query(PresentBaby).options(joinedload(PresentBaby.Baby)).all()
+        if present_babies:
+            serialized_babies = [serialize_baby(baby.Baby) for baby in present_babies]
+            return {
+                "message": "Babies retrieved successfully",
+                "status_code": 200,
+                "data": serialized_babies
+            }
+        else:
+            return {
+                "message": "No babies found",
+                "status_code": 404,
+                "data": []
+            }
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=400, detail=str(e))
