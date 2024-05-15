@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById("form");
 
     form.addEventListener("submit", function(event) {
-        event.preventDefault(); // Stop the form from submitting normally
+        event.preventDefault(); 
 
         if (!validate()) {
             console.log("Validation failed.");
-            return; // Stop the form submission if validation fails
+            return; 
         }
 
         const formData = {
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function validate() {
-        let isValid = true; // Flag to determine if form should submit
+        let isValid = true;
 
         const fields = [
             { id: 'token', errorMessage: "Token is required" },
