@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         //     return isValid;
         // }
 
-        fetch('http://127.0.0.1:8014/auth/login', { // Change URL to your login API
+        fetch('http://127.0.0.1:8014/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,17 +48,17 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data.data);
-            if (data.message == "Admin logged in successfully") {
+            console.log('Success:', data);
+            if (data.message === "Admin logged in successfully") {
                 alert("Login successful");
+                window.location.href = '../../views/html/admindashboard.html'; 
+            } else {
+                alert("Failed to login: " + (data.detail || "Unknown error"));
             }
-            else{alert("failed to login");}
-            // Handle success - for example, redirect to another page or display a welcome message
-            // window.location.href = '/dashboard.html'; // Redirect on successful login
         })
         .catch((error) => {
             console.error('Error:', error);
-            // Handle errors - display error message, log errors, etc.
+            alert("failed to login");
         });
     });
 });
