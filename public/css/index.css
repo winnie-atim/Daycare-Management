@@ -7,8 +7,6 @@
 }
 
 
-
-
 /* landing page designs */
 .main-heading{
     background-color: #900C3F;
@@ -38,10 +36,6 @@
 .daystar{
     color: rgb(35, 135, 174);
 }
-
-
-
-
 
 /* admin login designs */
 .mycard{
@@ -105,7 +99,6 @@
 }
 
 
-
 /* Admin Dashboard */
 .admin-card{
     height: 130px;
@@ -132,7 +125,6 @@
 
 }
 
-
 .admin-role{
     font-family: alcnica;
     margin-top: 20px;
@@ -146,8 +138,3 @@
     text-decoration: none;
 
 }
-
-
-
-
-
