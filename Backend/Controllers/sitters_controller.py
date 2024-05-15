@@ -52,7 +52,7 @@ def present_sitter(db: Session, sitter_id: int):
     print(f"Presenting sitter with id: {sitter_id}")
     try:
         new_present = PresentSitter(sitter_id=sitter_id, date=datetime.now())
-
+        Sitter.update_sitter_status(db, sitter_id)
         db.add(new_present)
         db.commit()
         return {
@@ -85,6 +85,15 @@ def update_when_paid(db: Session, sitter_id: int):
                 "message": "Payment updated successfully",
                 "status_code": 200
             }
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+def get_all_sitters(db: Session):
+    print("Getting all sitters")
+    try:
+        sitters = db.query(Sitter).all()
+        return {"data": sitters}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")

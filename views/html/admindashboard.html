@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- <link href="../../public/css/index.css"  rel="stylesheet"/> -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+
     <style>
       body, html {
           font-family: 'Arial', sans-serif !important;
@@ -87,7 +89,7 @@
           <div class="list-group list-group-flush my-3">
             <a href="javascript:void(0);" id = "sidebar-items" onclick="loadContent('babiesform.html');" class="list-group-item list-group-item-action bg-light">Register Baby</a>
             <a href="javascript:void(0);" id = "sidebar-items" onclick="loadContent('newSitter.html');" class="list-group-item list-group-item-action bg-light">Register Babysitter</a>
-            <a href="javascript:void(0);" id = "sidebar-items" onclick="loadContent('paymentmonitor.html');" class="list-group-item list-group-item-action bg-light">Payment Monitor</a>
+            <a href="javascript:void(0);" id = "sidebar-items" onclick="loadContent('allSeaters.html');" class="list-group-item list-group-item-action bg-light">All Sitters</a>
             <a href="javascript:void(0);" id = "sidebar-items" onclick="loadContent('datatracker.html');" class="list-group-item list-group-item-action bg-light">Data Tracker</a>
             <a href="javascript:void(0);" id = "sidebar-items" onclick="loadContent('procurement.html');" class="list-group-item list-group-item-action bg-light">Procurement Corner</a>
             <a href="index.html" id = "sidebar-items" class="list-group-item list-group-item-action bg-light">Logout</a>
@@ -147,23 +149,81 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/8bd93dfcff.js" crossorigin="anonymous"></script>
-    <script>
-      function loadContent(pageUrl) {
-      fetch(pageUrl)
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok ' + response.statusText);
-              }
-              return response.text();
-          })
-          .then(html => {
-              document.getElementById('main-content').innerHTML = html;
-          })
-          .catch(error => {
-              console.error('Error loading the page: ', error);
-              document.getElementById('main-content').innerHTML = '<p>Error loading the content.</p>';
-          });
-  }
-    </script>
+    <!-- <script>
+    function loadContent(pageUrl) {
+    fetch(pageUrl)
+        .then(response => response.text())
+        .then(html => {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = html;
+            // Initialize or re-run JavaScript if necessary
+            if (pageUrl === 'allSeaters.html') {
+                fetchSitters(); // Assuming this function populates the table
+            }
+        })
+        .catch(error => {
+            console.error('Error loading the page: ', error);
+            mainContent.innerHTML = '<p>Error loading the content.</p>';
+        });
+      }
+      function fetchSitters() {
+          console.log("Fetching sitters...");
+          fetch('http://127.0.0.1:8014/sitters/get_all_sitters')
+              .then(response => {
+                  if (!response.ok) throw new Error('Network response was not ok');
+                  return response.json();
+              })
+              .then(data => {
+                  console.log("Data received:", data);
+                  populateTable(data.data);
+              })
+              .catch(error => {
+                  console.error('Error fetching sitters:', error);
+              });
+      }
+
+      function populateTable(sitters) {
+        const tableBody = document.getElementById('sittersTableBody');
+        tableBody.innerHTML = ''; // Clear existing entries
+        sitters.forEach(sitter => {
+            const statusButton = sitter.status === 'on_duty' ?
+                `<button class="btn btn-success" disabled>Present</button>` : // Button is green and disabled
+                `<button class="btn btn-primary" onclick="markPresent(${sitter.id}, this)">${sitter.status}</button>`; // Button allows marking as present
+
+            const row = `<tr>
+                <td>${sitter.name}</td>
+                <td>${sitter.location}</td>
+                <td>${sitter.contact}</td>
+                <td>${statusButton}</td>
+            </tr>`;
+
+            tableBody.innerHTML += row; 
+        });
+    }
+
+    function markPresent(sitterId, element) {
+    fetch(`http://127.0.0.1:8014/sitters/present_sitter/?sitter_id=${sitterId}`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === "Sitter marked as present") {
+            element.textContent = 'Present';
+            element.classList.remove('btn-primary');
+            element.classList.add('btn-success');
+            element.disabled = true; 
+        } else {
+            alert('Failed to mark as present');
+        }
+    })
+    .catch(error => {
+        console.error('Error marking sitter as present:', error);
+        alert('Error marking sitter as present');
+    });
+}
+
+
+    </script> -->
+    <script src="../../public/js/present-sitter.js"></script>
 </body>
 </html>

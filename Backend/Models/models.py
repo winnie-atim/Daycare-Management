@@ -29,6 +29,16 @@ class Sitter(Base):
     # payment = relationship('Payment', back_populates='sitter_id')
 
     @staticmethod
+    def update_sitter_status(db_session, sitter_id):
+        print(f"Updating sitter status for sitter with id {sitter_id}")
+        sitter = db_session.query(Sitter).filter_by(id=sitter_id).first()
+        if sitter:
+            sitter.status = "on_duty"
+            db_session.commit()
+            return sitter
+        return None
+
+    @staticmethod
     def create_sitter(db_session, sitter: dict):
         print("""Creating sitter""")
         # print(sitter)
@@ -78,7 +88,6 @@ class Baby(Base):
             db_session.commit()
             return baby
         
-
 class Admin(Base):
     __tablename__ = 'admin'
     id = Column(Integer, primary_key=True, index=True)

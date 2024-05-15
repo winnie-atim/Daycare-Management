@@ -6,7 +6,8 @@ from Controllers.sitters_controller import (
     create_sitter,
     present_sitter,
     get_all_present_sitters,
-    update_when_paid
+    update_when_paid,
+    get_all_sitters
 )
 
 router = APIRouter()
@@ -32,7 +33,18 @@ async def create_sitter_route(sitter: dict, db: Session = Depends(get_db)):
             raise HTTPException(status_code=400, detail="An error occurred")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
-
+    
+@router.get("/get_all_sitters")
+async def get_all_sitters_route(db: Session = Depends(get_db)):
+    try:
+        sitters = get_all_sitters(db)
+        if sitters:
+            return sitters
+        else:
+            raise HTTPException(status_code=400, detail="An error occurred")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
 @router.post("/present_sitter/")
 async def present_sitter_route(sitter_id: int, db: Session = Depends(get_db)):
     try:
