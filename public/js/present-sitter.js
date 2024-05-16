@@ -8,6 +8,9 @@ function loadContent(pageUrl) {
             if (pageUrl === 'allSeaters.html') {
                 fetchSitters();
             }
+            else if (pageUrl === 'releaseBaby.html') {
+                fetchPresentBabies();
+            }
         })
         .catch(error => {
             console.error('Error loading the page: ', error);
@@ -68,4 +71,67 @@ function loadContent(pageUrl) {
             console.error('Error marking sitter as present:', error);
             alert('Error marking sitter as present');
         });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchPresentBabies();
+    });
+
+    function fetchPresentBabies() {
+        fetch('http://127.0.0.1:8014/babies/get_all_present_babies')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('babiesTableBody');
+            tableBody.innerHTML = ''; // Clear existing entries
+            data.data.forEach(baby => {
+                const row = `
+                    <tr id="baby-${baby.id}">
+                        <td>${baby.name}</td>
+                        <td>${baby.location}</td>
+                        <td>${baby.time_of_arrival}</td>
+                        <td><button class="btn btn-primary" onclick="releaseBaby(${baby.id}, ${baby.sitter_assigned})">Release</button></td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        })
+        .catch(error => console.error('Error fetching present babies:', error));
+    }
+
+    function releaseBaby(babyId, sitterId) {
+        const body = { baby_id: babyId, sitter_id: sitterId };
+        fetch('http://127.0.0.1:8014/babies/release_baby', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status_code === 200) {
+                fetchReleasedBabies(babyId);
+            } else {
+                alert('Failed to release the baby: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error releasing baby:', error);
+            alert('Error releasing the baby.');
+        });
+    }
+
+    function fetchReleasedBabies(babyId) {
+        fetch('http://127.0.0.1:8014/babies/get_release_baby')
+        .then(response => response.json())
+        .then(data => {
+            data.data.forEach(baby => {
+                if (baby.baby_id === babyId) {
+                    const row = document.getElementById('baby-' + babyId);
+                    if (row) {
+                        row.remove(); // Remove the row from the table
+                    }
+                }
+            });
+            alert('Baby successfully released and removed from the list!');
+        })
+        .catch(error => console.error('Error fetching released babies:', error));
     }

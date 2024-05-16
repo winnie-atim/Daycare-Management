@@ -7,7 +7,8 @@ from Controllers.baby_controller import (
     relaese_baby,
     get_all_babies,
     add_baby_to_present,
-    get_present_babies
+    get_present_babies,
+    get_released_babies
 )
 
 router = APIRouter()
@@ -75,6 +76,17 @@ async def realase_baby_route(baby_data: dict, db: Session = Depends(get_db)):
         release = relaese_baby(db, baby_data)
         if release:
             return release
+        else:
+            raise HTTPException(status_code=400, detail="An error occurred")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+@router.get('/get_release_baby')
+async def get_released_babies_route(db: Session = Depends(get_db)):
+    try:
+        relaese_baby = get_released_babies(db)
+        if relaese_baby:
+            return relaese_baby
         else:
             raise HTTPException(status_code=400, detail="An error occurred")
     except Exception as e:

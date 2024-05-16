@@ -161,3 +161,19 @@ def get_present_babies(db: Session) -> Dict[str, Any]:
             }
     except SQLAlchemyError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+def get_released_babies(db: Session):
+    print("""getting released babies""")
+    try:
+        relaese_baby = db.query(BabyRelease).all()
+        if relaese_baby:
+            return {
+            "message": "Baby retrieved successfully",
+            "status_code": 200,
+            "data": relaese_baby
+            }
+        else:
+            raise HTTPException(status_code=400, detail="An error occurred")
+        
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=400, detail=str(e))
