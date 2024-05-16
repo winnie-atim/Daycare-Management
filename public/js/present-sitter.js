@@ -9,7 +9,7 @@ function loadContent(pageUrl) {
                 fetchSitters();
             }
             else if (pageUrl === 'releaseBaby.html') {
-                fetchPresentBabies();
+                fetchAllData();
             }
         })
         .catch(error => {
@@ -33,22 +33,19 @@ function loadContent(pageUrl) {
               });
       }
 
-      function populateTable(sitters) {
-        const tableBody = document.getElementById('sittersTableBody');
-        tableBody.innerHTML = ''; 
-        sitters.forEach(sitter => {
-            const statusButton = sitter.status === 'on_duty' ?
-                `<button class="btn btn-success" disabled>Present</button>` : 
-                `<button class="btn btn-primary" onclick="markPresent(${sitter.id}, this)">${sitter.status}</button>`; 
-
-            const row = `<tr>
-                <td>${sitter.name}</td>
-                <td>${sitter.location}</td>
-                <td>${sitter.contact}</td>
-                <td>${statusButton}</td>
-            </tr>`;
-
-            tableBody.innerHTML += row; 
+      function displayPresentBabies(presentBabies) {
+        const tableBody = document.getElementById('babiesTableBody');
+        tableBody.innerHTML = ''; // Clear existing entries
+        presentBabies.forEach(baby => {
+            const row = `
+                <tr id="baby-${baby.id}">
+                    <td>${baby.name}</td>
+                    <td>${baby.location}</td>
+                    <td>${baby.time_of_arrival}</td>
+                    <td><button class="btn btn-primary" onclick="releaseBaby(${baby.id}, ${baby.sitter_assigned})">Release</button></td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
         });
     }
 
@@ -76,6 +73,21 @@ function loadContent(pageUrl) {
     document.addEventListener('DOMContentLoaded', function() {
         fetchPresentBabies();
     });
+
+    function fetchAllData() {
+        Promise.all([
+            fetch('http://127.0.0.1:8014/babies/get_all_present_babies').then(response => response.json()),
+            fetch('http://127.0.0.1:8014/babies/get_release_baby').then(response => response.json())
+        ])
+        .then(([presentData, releasedData]) => {
+            const releasedIds = new Set(releasedData.data.map(baby => baby.baby_id));
+            displayPresentBabies(presentData.data.filter(baby => !releasedIds.has(baby.id)));
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            alert('Failed to fetch data.');
+        });
+    }
 
     function fetchPresentBabies() {
         fetch('http://127.0.0.1:8014/babies/get_all_present_babies')
@@ -108,7 +120,8 @@ function loadContent(pageUrl) {
         .then(response => response.json())
         .then(data => {
             if (data.status_code === 200) {
-                fetchReleasedBabies(babyId);
+                alert('Baby successfully released!');
+                fetchAllData(); // Refresh data
             } else {
                 alert('Failed to release the baby: ' + data.message);
             }
@@ -118,7 +131,6 @@ function loadContent(pageUrl) {
             alert('Error releasing the baby.');
         });
     }
-
     function fetchReleasedBabies(babyId) {
         fetch('http://127.0.0.1:8014/babies/get_release_baby')
         .then(response => response.json())
