@@ -90,7 +90,7 @@ function loadContent(pageUrl) {
 
     function displayPresentBabies(presentBabies) {
         const tableBody = document.getElementById('babiesTableBody');
-        tableBody.innerHTML = ''; // Clear existing entries
+        tableBody.innerHTML = ''; // Clearing existing entries
         presentBabies.forEach(baby => {
             const row = `
                 <tr id="baby-${baby.id}">
@@ -115,7 +115,7 @@ function loadContent(pageUrl) {
         .then(data => {
             if (data.status_code === 200) {
                 alert('Baby successfully released!');
-                fetchAllData(); // Refresh data
+                fetchAllData(); // Refreshing the  data
             } else {
                 alert('Failed to release the baby: ' + data.message);
             }

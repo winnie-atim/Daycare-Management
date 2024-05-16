@@ -72,7 +72,14 @@ def get_all_present_sitters(db: Session):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
-    
+
+def get_sitters_bill(db: Session):
+    try:
+        sitters = db.query(DailyPayment).all()
+        return {"data": sitters}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 def update_when_paid(db: Session, sitter_id: int):
     try:
