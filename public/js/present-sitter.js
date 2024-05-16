@@ -4,9 +4,9 @@ function loadContent(pageUrl) {
         .then(html => {
             const mainContent = document.getElementById('main-content');
             mainContent.innerHTML = html;
-            // Initialize or re-run JavaScript if necessary
+           
             if (pageUrl === 'allSeaters.html') {
-                fetchSitters(); // Assuming this function populates the table
+                fetchSitters();
             }
         })
         .catch(error => {
