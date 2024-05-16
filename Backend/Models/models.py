@@ -202,6 +202,8 @@ class DailyPayment(Base):
     payment_date = Column(DateTime, nullable=True)
     is_paid = Column(Boolean, default=False)
 
+    sitter = relationship("Sitter", backref="daily_payments")
+
 class BabyRelease(Base):
     __tablename__ = 'baby_release'
     id = Column(Integer, primary_key=True, index=True)

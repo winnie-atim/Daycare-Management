@@ -75,7 +75,7 @@ def get_all_present_sitters(db: Session):
 
 def get_sitters_bill(db: Session):
     try:
-        sitters = db.query(DailyPayment).all()
+        sitters = (db.query(DailyPayment).options(joinedload(DailyPayment.sitter)).all())
         return {"data": sitters}
     except Exception as e:
         db.rollback()

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitter Payments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn {
+            padding: 5px 15px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sitter Payment Details</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Sitter Name</th>
+                <th>Total Amount</th>
+                <th>Payment Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="paymentTableBody"></tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchPaymentDetails();
+        });
+
+        function fetchPaymentDetails() {
+            Promise.all([
+                fetch('http://127.0.0.1:8014/sitters/get_all_present_sitters').then(res => res.json()),
+                fetch('http://127.0.0.1:8014/sitters/get_all_sitters_bill').then(res => res.json())
+            ]).then(([sittersData, billsData]) => {
+                const sitterPayments = mergeData(sittersData.data, billsData.data);
+                populateTable(sitterPayments);
+            }).catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+
+        function mergeData(sitters, bills) {
+            const billsMap = new Map(bills.map(bill => [bill.sitter_id, bill]));
+            return sitters.map(sitter => ({
+                ...sitter.sitter,
+                ...billsMap.get(sitter.sitter.id)
+            }));
+        }
+
+        function populateTable(data) {
+            const tableBody = document.getElementById('paymentTableBody');
+            tableBody.innerHTML = '';
+            data.forEach(item => {
+                const row = `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.total_amount || 0}</td>
+                        <td>${item.is_paid ? item.payment_date : 'Not Paid'}</td>
+                        <td>
+                            ${!item.is_paid ? `<button class="btn" onclick="updatePayment(${item.id})">Approve Payment</button>` : '<button class="btn btn-disabled" disabled>Payment Approved</button>'}
+                        </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function updatePayment(sitterId) {
+            fetch(`http://127.0.0.1:8014/sitters/update_payment?sitter_id=${sitterId}`, {
+                method: 'PUT'
+            }).then(response => response.json())
+              .then(data => {
+                  alert('Payment status updated successfully!');
+                  fetchPaymentDetails();  // Refresh the data
+              }).catch(error => {
+                  console.error('Error updating payment status:', error);
+                  alert('Failed to update payment status.');
+              });
+        }
+    </script>
+</body>
+</html>
