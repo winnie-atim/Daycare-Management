@@ -11,13 +11,16 @@ function loadContent(pageUrl) {
             else if (pageUrl === 'releaseBaby.html') {
                 fetchAllData();
             }
+            if(pageUrl === 'presentSitter.html') {
+                fetchSitterBillDetails();
+            }
         })
         .catch(error => {
             console.error('Error loading the page: ', error);
             mainContent.innerHTML = '<p>Error loading the content.</p>';
         });
-      }
-      function fetchSitters() {
+    }
+    function fetchSitters() {
           console.log("Fetching sitters...");
           fetch('http://127.0.0.1:8014/sitters/get_all_sitters')
               .then(response => {
@@ -126,4 +129,49 @@ function loadContent(pageUrl) {
         });
     }
 
-    
+    function fetchSitterBillDetails() {
+        console.log("Fetching sitter bill ...");
+        fetch('http://127.0.0.1:8014/sitters/get_all_sitters_bill')
+        .then(response => response.json())
+        .then(data => populateTableBill(data.data))
+        .catch(error => {
+            console.error('Error fetching sitter bills:', error);
+        });
+    }
+
+    function populateTableBill(data) {
+        const tableBody = document.getElementById('paymentTableBody');
+        tableBody.innerHTML = '';
+        data.forEach(item => {
+            const paymentDate = item.is_paid ? item.payment_date : 'Not Paid';
+            const actionButton = item.is_paid ? 
+                '<button class="btn btn-disabled" disabled>Payment Approved</button>' :
+                `<button class="btn" onclick="updatePayment(${item.sitter_id})">Approve Payment</button>`;
+            const row = `
+                <tr>
+                    <td>${item.sitter.name}</td>
+                    <td>${item.sitter.contact}</td>
+                    <td>${item.total_amount.toFixed(2)}</td>
+                    <td>${paymentDate}</td>
+                    <td>${actionButton}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    }
+    function updatePayment(sitterId) {
+        fetch(`http://127.0.0.1:8014/sitters/update_payment?sitter_id=${sitterId}`, {
+            method: 'PUT'
+        }).then(response => response.json())
+          .then(data => {
+              if (data.status_code === 200) {
+                  alert('Payment status updated successfully!');
+                  fetchSitterBillDetails();  // Refresh the data
+              } else {
+                  alert('Failed to update payment status: ' + data.message);
+              }
+          }).catch(error => {
+              console.error('Error updating payment status:', error);
+              alert('Failed to update payment status.');
+          });
+    }

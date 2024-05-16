@@ -74,6 +74,7 @@ def get_all_present_sitters(db: Session):
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 def get_sitters_bill(db: Session):
+    print("Getting all sitters bill")
     try:
         sitters = (db.query(DailyPayment).options(joinedload(DailyPayment.sitter)).all())
         return {"data": sitters}
