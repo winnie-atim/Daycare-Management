@@ -52,7 +52,7 @@ def generate_access_number(db: Session):
 
         return f"{letter}{number:05d}"
         
-def update_baby(db: Session,baby_data):
+def update_baby(db: Session,baby_data: dict):
     print("""Updating baby""")
     baby_access = baby_data['baby_access']
     baby = db.query(Baby).filter_by(baby_access=baby_access).first()

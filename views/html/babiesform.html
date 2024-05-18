@@ -3,72 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-    <!-- <link href="../../public/css/index.css"  rel="stylesheet"/> -->
-    <!-- <link href="../../public/css/loginpage.css"  rel="stylesheet"/> -->
     <title>Register New Baby</title>
     <style>
-      .form-container {
-          width: 80%;
-          margin: auto;
-          padding: 20px;
-          background-color: #fff;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      }
+        .form-container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-      .header {
-          text-align: center;
-          margin-bottom: 20px;
-      }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-      .form-control, .form-select {
-          width: 100%;
-          padding: 10px;
-          margin: 5px 0;
-          display: inline-block;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          box-sizing: border-box;
-      }
+        .form-control, .form-select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
 
-      .btn-primary {
-          background-color: #4CAF50;
-          color: white;
-          padding: 14px 20px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          float: right;
-      }
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+            margin-left: 10px;
+        }
 
-      .btn-primary:hover {
-          background-color: #45a049;
-      }
-  </style>
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-  <div class="form-container">
-    <!-- <h2 class="header">Adding a Baby</h2> -->
-    <form id="registerBabyForm">
-        <input type="text" class="form-control" id="babyname" placeholder="Baby Name">
-        <select class="form-select" id="gender">
-          <option value="">Select Gender</option>
-          <option value="female">Female</option>
-          <option value="male">Male</option>
-        </select>
-        <input type="number" class="form-control" id="age" placeholder="Age">
-        <input type="text" class="form-control" id="location" placeholder="Location">
-        <input type="text" class="form-control" id="nameofguardian" placeholder="Name of Guardian">
-        <input type="time" class="form-control" id="timeOfArrival" placeholder="Time of Arrival">
-        <input type="text" class="form-control" id="nameofparent" placeholder="Name of Parent">
-        <input type="number" class="form-control" id="fee" placeholder="Fee">
-        <select class="form-select" id="sitterAssigned">
-          <option selected>Assign a Sitter</option>
-        </select>
-        <button type="button" class="btn btn-primary" onclick="registerBaby()">Register Baby</button>
-    </form>
-  </div>
+    <div class="form-container">
+        <h2 class="header">Adding a Baby</h2>
+        <form id="searchBabyForm">
+            <input type="text" class="form-control" id="babyAccess" placeholder="Enter Access Number">
+            <button type="button" class="btn btn-primary" onclick="searchBaby()">Search Baby</button>
+        </form>
+        <br>
+        <form id="registerBabyForm">
+            <input type="text" class="form-control" id="babyname" placeholder="Baby Name">
+            <select class="form-select" id="gender">
+                <option value="">Select Gender</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+            </select>
+            <input type="number" class="form-control" id="age" placeholder="Age">
+            <input type="text" class="form-control" id="location" placeholder="Location">
+            <input type="text" class="form-control" id="nameofguardian" placeholder="Name of Guardian">
+            <input type="time" class="form-control" id="timeOfArrival" placeholder="Time of Arrival">
+            <input type="text" class="form-control" id="nameofparent" placeholder="Name of Parent">
+            <input type="number" class="form-control" id="fee" placeholder="Fee">
+            <select class="form-select" id="sitterAssigned">
+                <option selected>Assign a Sitter</option>
+            </select>
+            <button type="button" class="btn btn-primary" id="registerButton" onclick="registerBaby()">Register Baby</button>
+            <button type="button" class="btn btn-primary" id="updateButton" style="display:none;" onclick="updateBaby()">Update Baby</button>
+        </form>
+    </div>
 
-<script src="../../public/js/register-baby.js"></script>
+    <script src="../../public/js/register-baby.js"></script>
 </body>
 </html>
