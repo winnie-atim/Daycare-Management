@@ -73,8 +73,9 @@
         function populateTable(data) {
             const tableBody = document.getElementById('paymentTableBody');
             tableBody.innerHTML = '';
+            console.log(data)
             data.forEach(item => {
-                const paymentDate = item.is_paid ? item.payment_date : 'Not Paid';
+                const paymentDate = item.is_paid ? new Date(item.payment_date).toLocaleString() : 'Not Paid';
                 const actionButton = item.is_paid ? 
                     '<button class="btn btn-disabled" disabled>Payment Approved</button>' :
                     `<button class="btn" onclick="updatePayment(${item.sitter_id})">Approve Payment</button>`;

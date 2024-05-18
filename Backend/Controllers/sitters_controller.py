@@ -130,13 +130,36 @@ def create_daily_payment_for_all_sitters(db: Session):
     db.commit()
 
 def get_unpaid_sitters_bill(db: Session):
+    print("Getting all unpaid sitters bill")
     try:
-        today = date.today()
-        sitters = (db.query(DailyPayment)
-                   .filter(DailyPayment.is_paid == False, DailyPayment.date >= today)
-                   .options(joinedload(DailyPayment.sitter))
-                   .all())
-        return sitters
+        sitters = (db.query(DailyPayment).filter_by(is_paid=False).options(joinedload(DailyPayment.sitter)).all())
+        serialized_sitters = []
+        for sitter in sitters:
+            serialized_sitters.append({
+                "id": sitter.id,
+                "sitter_id": sitter.sitter_id,
+                "amount": sitter.amount,
+                "number_of_babies": sitter.number_of_babies,
+                "total_amount": sitter.total_amount,
+                "date": sitter.date,
+                "payment_date": sitter.payment_date,
+                "is_paid": sitter.is_paid,
+                "sitter": {
+                    "id": sitter.sitter.id,
+                    "name": sitter.sitter.name,
+                    "contact": sitter.sitter.contact,
+                    "location": sitter.sitter.location,
+                    "next_of_kin": sitter.sitter.next_of_kin,
+                    "recommended_by": sitter.sitter.recommended_by,
+                    "level_of_education": sitter.sitter.level_of_education,
+                    "date_of_birth": sitter.sitter.date_of_birth,
+                    "gender": sitter.sitter.gender,
+                    "NIN": sitter.sitter.NIN,
+                    "religion": sitter.sitter.religion,
+                    "status": sitter.sitter.status
+                }
+            })
+        return {"data": serialized_sitters}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")

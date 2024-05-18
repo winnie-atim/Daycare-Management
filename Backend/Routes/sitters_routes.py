@@ -9,6 +9,7 @@ from Controllers.sitters_controller import (
     update_when_paid,
     get_all_sitters,
     get_unpaid_sitters_bill,
+    get_sitters_bill,
     new_day_sitter,
     update_payment_status,
     create_daily_payment_for_all_sitters
@@ -82,11 +83,15 @@ async def get_all_present_sitters_route(db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
+
 @router.get("/get_all_sitters_bill")
 async def get_all_sitters_bill_route(db: Session = Depends(get_db)):
     try:
-        sitters_bill = get_unpaid_sitters_bill(db)
-        return {"data": sitters_bill}
+        sitters = get_unpaid_sitters_bill(db)
+        if sitters:
+            return sitters
+        else:
+            raise HTTPException(status_code=400, detail="An error occurred")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
     

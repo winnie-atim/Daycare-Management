@@ -30,18 +30,18 @@ app.include_router(baby_routes.router, prefix="/babies")#, tags=["Babies"])
 app.include_router(admin_routes.router, prefix="/admins")#, tags=["Admins"])
 app.include_router(auth_routes.router, prefix="/auth")#, tags=["Auth"])
 
-# Initializing the scheduler
-scheduler = BackgroundScheduler()
+# # Initializing the scheduler
+# scheduler = BackgroundScheduler()
 
 
 
-scheduler.add_job(tasks.reset_sitter_status, CronTrigger(hour=0, minute=0))
-scheduler.add_job(tasks.reset_daily_payments, CronTrigger(hour=0, minute=0))  
-scheduler.start()
+# scheduler.add_job(tasks.reset_sitter_status, CronTrigger(hour=0, minute=0))
+# scheduler.add_job(tasks.reset_daily_payments, CronTrigger(hour=0, minute=0))  
+# scheduler.start()
 
-@app.on_event("shutdown")
-def shutdown_event():
-    scheduler.shutdown()
+# @app.on_event("shutdown")
+# def shutdown_event():
+#     scheduler.shutdown()
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8014, reload=True)
