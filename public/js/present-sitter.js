@@ -1,3 +1,33 @@
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+    notification.classList.add('show');
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadContent('babiesform.html');
+});
+
+// function fetchSitters() {
+//     fetch('http://127.0.0.1:8014/sitters/get_all_present_sitters')
+//     .then(response => response.json())
+//     .then(data => {
+//         const sitterSelect = document.getElementById('sitterAssigned');
+//         data.data.forEach(sitter => {
+//             const option = document.createElement('option');
+//             option.value = sitter.sitter.id;
+//             option.textContent = sitter.sitter.name;
+//             sitterSelect.appendChild(option);
+//         });
+//     })
+//     .catch(error => console.error('Error fetching sitters:', error));
+// }
 function loadContent(pageUrl) {
     fetch(pageUrl)
         .then(response => response.text())
@@ -6,7 +36,7 @@ function loadContent(pageUrl) {
             mainContent.innerHTML = html;
            
             if (pageUrl === 'allSeaters.html') {
-                fetchSitters();
+                fetchAllSitters();
             }
             else if (pageUrl === 'releaseBaby.html') {
                 fetchAllData();
@@ -20,7 +50,7 @@ function loadContent(pageUrl) {
             mainContent.innerHTML = '<p>Error loading the content.</p>';
         });
     }
-    function fetchSitters() {
+    function fetchAllSitters() {
           console.log("Fetching sitters...");
           fetch('http://127.0.0.1:8014/sitters/get_all_sitters')
               .then(response => {
@@ -174,4 +204,40 @@ function loadContent(pageUrl) {
               console.error('Error updating payment status:', error);
               alert('Failed to update payment status.');
           });
+    }
+
+    function searchBaby() {
+        const babyAccess = document.getElementById('babyAccess').value.trim();
+        if (babyAccess === '') {
+            showNotification('Please enter an access number.', 'error');
+            return;
+        }
+    
+        fetch(`http://127.0.0.1:8014/babies/get_baby_by_access?baby_access=${babyAccess}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status_code === 200 && data.data) {
+                populateSearchBabyForm(data.data);
+                showNotification('Baby found successfully!', 'success');
+            } else {
+                showNotification('Baby not found.', 'error');
+            }
+        })
+        .catch(error => console.error('Error fetching baby:', error));
+    }
+
+    function populateSearchBabyForm(baby) {
+        document.getElementById('babyname').value = baby.name;
+        document.getElementById('gender').value = baby.gender;
+        document.getElementById('age').value = baby.age;
+        document.getElementById('location').value = baby.location;
+        document.getElementById('nameofguardian').value = baby.name_of_brought_person;
+        document.getElementById('timeOfArrival').value = baby.time_of_arrival;
+        document.getElementById('nameofparent').value = baby.name_of_parent;
+        document.getElementById('fee').value = baby.fee;
+        document.getElementById('sitterAssigned').value = baby.sitter_assigned;
+    
+        document.getElementById('updateButton').style.display = 'inline-block';
+        document.getElementById('registerButton').style.display = 'none';
+        document.getElementById('registerBabyForm').setAttribute('data-baby-access', baby.baby_access);
     }

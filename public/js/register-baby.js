@@ -1,3 +1,13 @@
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+    notification.classList.add('show');
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
 document.addEventListener('DOMContentLoaded', function() {
     fetchSitters();
 });
@@ -20,7 +30,7 @@ function fetchSitters() {
 function searchBaby() {
     const babyAccess = document.getElementById('babyAccess').value.trim();
     if (babyAccess === '') {
-        alert('Please enter an access number.');
+        showNotification('Please enter an access number.', 'error');
         return;
     }
 
@@ -29,8 +39,9 @@ function searchBaby() {
     .then(data => {
         if (data.status_code === 200 && data.data) {
             populateForm(data.data);
+            showNotification('Baby found successfully!', 'success');
         } else {
-            alert('Baby not found.');
+            showNotification('Baby not found.', 'error');
         }
     })
     .catch(error => console.error('Error fetching baby:', error));
@@ -76,10 +87,10 @@ function registerBaby() {
     .then(response => response.json())
     .then(data => {
         if (data.status_code === 200) {
-            alert('Baby registered successfully!');
+            showNotification('Baby registered successfully!', 'success');
             resetForm();
         } else {
-            alert('Failed to register baby: ' + data.message);
+            showNotification('Failed to register baby: ' + data.message, 'error');
         }
     })
     .catch(error => console.error('Error registering baby:', error));
@@ -106,10 +117,13 @@ function updateBaby() {
     .then(response => response.json())
     .then(data => {
         if (data.status_code === 200) {
-            alert('Baby updated successfully!');
+            showNotification('Baby updated successfully!', 'success');
             resetForm();
+
+            document.getElementById('updateButton').style.display = 'none';
+            document.getElementById('registerButton').style.display = 'inline-block';
         } else {
-            alert('Failed to update baby: ' + data.message);
+            showNotification('Failed to update baby: ' + data.message, 'error');
         }
     })
     .catch(error => console.error('Error updating baby:', error));

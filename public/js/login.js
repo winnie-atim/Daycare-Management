@@ -1,3 +1,14 @@
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+    notification.classList.add('show');
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
 
@@ -50,15 +61,19 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log('Success:', data);
             if (data.message === "Admin logged in successfully") {
-                alert("Login successful");
+                // alert("Login successful");
+                showNotification("Login successful", 'success');
                 window.location.href = '../../views/html/admindashboard.html'; 
             } else {
-                alert("Failed to login: " + (data.detail || "Unknown error"));
+                // alert("Failed to login: " + (data.detail || "Unknown error"));
+                showNotification("Failed to login ", 'error');
             }
         })
         .catch((error) => {
             console.error('Error:', error);
-            alert("failed to login");
+            // alert("failed to login");
+            showNotification("Failed to login: ", 'error');
+
         });
     });
 });

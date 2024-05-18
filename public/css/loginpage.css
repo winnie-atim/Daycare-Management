@@ -71,10 +71,28 @@ a:hover {
 }
 
 .form-container-sitter {
-    max-width: 900px; /* Increase width */
-    margin: 20px auto; /* Centering the form */
+    max-width: 900px; 
+    margin: 20px auto; 
     padding: 20px;
-    border: 1px solid #ccc; /* Optional: adds a border */
-    border-radius: 10px; /* Optional: rounds the corners */
-    background-color: #f8f9fa; /* Optional: background color */
+    border: 1px solid #ccc; 
+    border-radius: 10px; 
+    background-color: #f8f9fa;
+}
+
+.notification {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    color: white;
+    padding: 16px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.notification.show {
+    display: block;
 }

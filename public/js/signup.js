@@ -1,3 +1,14 @@
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+    notification.classList.add('show');
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById("form");
 
@@ -33,13 +44,15 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             console.log("Success:", data);
-            alert ("Account created successfully.");
+            // alert ("Account created successfully.");
+            showNotification("Account created successfully.", 'success');
             window.location.href = '../../views/html/admindashboard.html';
             // Handling success here (e.g., displaying a success message, redirecting, etc.)
         })
         .catch((error) => {
             console.error('Error:', error);
             // Handling errors here (e.g., displaying error messages)
+            showNotification("Failed to login: " + (data.detail || "Unknown error"), 'error');
         });
     });
 
