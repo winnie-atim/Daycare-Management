@@ -1,7 +1,7 @@
 from Models.models import Sitter, DailyPayment, PresentSitter
 from fastapi import APIRouter, HTTPException
 from sqlalchemy.orm import Session, joinedload
-from datetime import datetime
+from datetime import datetime, date
 async def create_sitter(db_session: Session, sitter: dict):
     try:
         new_sitter = Sitter.create_sitter(db_session, sitter)
@@ -128,3 +128,32 @@ def create_daily_payment_for_all_sitters(db: Session):
         )
         db.add(new_payment)
     db.commit()
+
+def get_unpaid_sitters_bill(db: Session):
+    try:
+        today = date.today()
+        sitters = (db.query(DailyPayment)
+                   .filter(DailyPayment.is_paid == False, DailyPayment.date >= today)
+                   .options(joinedload(DailyPayment.sitter))
+                   .all())
+        return sitters
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+
+def update_payment_status(db: Session, sitter_id: int):
+    try:
+        sitter_payment = db.query(DailyPayment).filter_by(sitter_id=sitter_id, is_paid=False).first()
+        if sitter_payment:
+            sitter_payment.is_paid = True
+            sitter_payment.payment_date = datetime.now()
+            db.commit()
+            return {
+                "message": "Payment updated successfully",
+                "status_code": 200
+            }
+        else:
+            raise HTTPException(status_code=404, detail="Sitter payment record not found or already paid")
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
