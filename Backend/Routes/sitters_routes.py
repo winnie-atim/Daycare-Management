@@ -9,7 +9,9 @@ from Controllers.sitters_controller import (
     update_when_paid,
     get_all_sitters,
     get_unpaid_sitters_bill,
-    new_day_sitter
+    new_day_sitter,
+    update_payment_status,
+    create_daily_payment_for_all_sitters
 )
 
 router = APIRouter()
@@ -91,10 +93,15 @@ async def get_all_sitters_bill_route(db: Session = Depends(get_db)):
 @router.put("/update_payment/")
 async def update_payment_route(sitter_id: int, db: Session = Depends(get_db)):
     try:
-        updated_payment = update_when_paid(db, sitter_id)
-        if updated_payment:
-            return updated_payment
-        else:
-            raise HTTPException(status_code=400, detail="An error occurred")
+        updated_payment = update_payment_status(db, sitter_id)
+        return updated_payment
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+@router.post("/reset_daily_payments")
+async def reset_daily_payments_route(db: Session = Depends(get_db)):
+    try:
+        create_daily_payment_for_all_sitters(db)
+        return {"message": "Daily payments reset successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
