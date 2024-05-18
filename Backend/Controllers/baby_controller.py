@@ -30,8 +30,6 @@ def create_baby_controller(db: Session, baby_data: dict):
         db.commit()
         db.refresh(new_baby)
         return {
-            "message": "Baby created successfully",
-            "status_code": 200,
             "data": new_baby
         }
     except Exception as e:

@@ -30,8 +30,24 @@ async def create_baby_route(baby: dict, db: Session = Depends(get_db)):
     try:
         created_baby = create_baby_controller(db, baby)
         if created_baby:
-            add_baby_to_present(db, created_baby.id)
-            return created_baby
+            add_baby_to_present(db, created_baby['data'].id)
+            return {
+                "message": "Baby registered successfully",
+                "status_code": 200,
+                "data": {
+                    "id": created_baby['data'].id,
+                    "name": created_baby['data'].name,
+                    "gender": created_baby['data'].gender,
+                    "age": created_baby['data'].age,
+                    "location": created_baby['data'].location,
+                    "name_of_brought_person": created_baby['data'].name_of_brought_person,
+                    "time_of_arrival": created_baby['data'].time_of_arrival,
+                    "name_of_parent": created_baby['data'].name_of_parent,
+                    "fee": created_baby['data'].fee,
+                    "sitter_assigned": created_baby['data'].sitter_assigned,
+                    "baby_access": created_baby['data'].baby_access
+                }
+            }
         else:
             raise HTTPException(status_code=400, detail="An error occurred")
     except Exception as e:

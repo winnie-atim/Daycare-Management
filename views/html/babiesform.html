@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <title>Register New Baby</title>
     <style>
-        /* .form-container {
+        .form-container {
             width: 80%;
             margin: auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow-y: auto;
-        } */
-
+        }
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
-
         .form-control, .form-select {
             width: 100%;
             padding: 10px;
@@ -28,7 +26,6 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-
         .btn-primary {
             background-color: #4CAF50;
             color: white;
@@ -39,61 +36,81 @@
             float: right;
             margin-left: 10px;
         }
-
         .btn-primary:hover {
             background-color: #45a049;
         }
-
         .notification {
-            display: none;
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #f44336;
+            padding: 10px 20px;
+            background-color: #4CAF50;
             color: white;
-            padding: 16px;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
         }
-
         .notification.show {
             display: block;
+        }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border-radius: 10px;
+        }
+        .popup-content {
+            text-align: center;
+        }
+        .popup-content button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-  <div class="form-container">
-      <h2 class="header">Adding a Baby</h2>
-      <form id="searchBabyForm">
-          <input type="text" class="form-control" id="babyAccess" placeholder="Enter Access Number">
-          <button type="button" class="btn btn-primary" onclick="searchBaby()">Search Baby</button>
-      </form>
-      <br>
-      <form id="registerBabyForm">
-          <input type="text" class="form-control" id="babyname" placeholder="Baby Name">
-          <select class="form-select" id="gender">
-              <option value="">Select Gender</option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-          </select>
-          <input type="number" class="form-control" id="age" placeholder="Age">
-          <input type="text" class="form-control" id="location" placeholder="Location">
-          <input type="text" class="form-control" id="nameofguardian" placeholder="Name of Guardian">
-          <input type="time" class="form-control" id="timeOfArrival" placeholder="Time of Arrival">
-          <input type="text" class="form-control" id="nameofparent" placeholder="Name of Parent">
-          <input type="number" class="form-control" id="fee" placeholder="Fee">
-          <select class="form-select" id="sitterAssigned">
-              <option selected>Assign a Sitter</option>
-          </select>
-          <button type="button" class="btn btn-primary" id="registerButton" onclick="registerBaby()">Register Baby</button>
-          <button type="button" class="btn btn-primary" id="updateButton" style="display:none;" onclick="updateBaby()">Update Baby</button>
-      </form>
-  </div>
+    <div class="form-container">
+        <h2 class="header">Adding a Baby</h2>
+        <form id="searchBabyForm">
+            <input type="text" class="form-control" id="babyAccess" placeholder="Enter Access Number">
+            <button type="button" class="btn btn-primary" onclick="searchBaby()">Search Baby</button>
+        </form>
+        <br>
+        <form id="registerBabyForm">
+            <input type="text" class="form-control" id="babyname" placeholder="Baby Name">
+            <select class="form-select" id="gender">
+                <option value="">Select Gender</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+            </select>
+            <input type="number" class="form-control" id="age" placeholder="Age">
+            <input type="text" class="form-control" id="location" placeholder="Location">
+            <input type="text" class="form-control" id="nameofguardian" placeholder="Name of Guardian">
+            <input type="time" class="form-control" id="timeOfArrival" placeholder="Time of Arrival">
+            <input type="text" class="form-control" id="nameofparent" placeholder="Name of Parent">
+            <input type="number" class="form-control" id="fee" placeholder="Fee">
+            <select class="form-select" id="sitterAssigned">
+                <option selected>Assign a Sitter</option>
+            </select>
+            <button type="button" class="btn btn-primary" id="registerButton" onclick="registerBaby()">Register Baby</button>
+            <button type="button" class="btn btn-primary" id="updateButton" style="display:none;" onclick="updateBaby()">Update Baby</button>
+        </form>
+    </div>
 
-  <div id="notification" class="notification"></div>
+    <div id="notification" class="notification"></div>
 
-  <script src="../../public/js/register-baby.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script> -->
+    <script src="../../public/js/register-baby.js"></script>
 </body>
 </html>
