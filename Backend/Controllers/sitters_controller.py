@@ -64,6 +64,19 @@ def present_sitter(db: Session, sitter_id: int):
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
     
+def new_day_sitter(db: Session, sitter_id: int):
+    print(f"Defaulting status for sitter with id: {sitter_id}")
+    try:
+        Sitter.update_sitter_status_on_new_day(db, sitter_id)
+        return {
+            "message": "Sitter status updated to default",
+            "status_code": 200
+        }
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
 def get_all_present_sitters(db: Session):
     print("Getting all present sitters")
     try:
@@ -77,7 +90,7 @@ def get_sitters_bill(db: Session):
     print("Getting all sitters bill")
     try:
         sitters = (db.query(DailyPayment).options(joinedload(DailyPayment.sitter)).all())
-        return {"data": sitters}
+        print(sitters)
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
@@ -105,3 +118,13 @@ def get_all_sitters(db: Session):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+def create_daily_payment_for_all_sitters(db: Session):
+    sitters = db.query(Sitter).all()
+    for sitter in sitters:
+        new_payment = DailyPayment(
+            sitter_id=sitter.id,
+            date=datetime.now()
+        )
+        db.add(new_payment)
+    db.commit()

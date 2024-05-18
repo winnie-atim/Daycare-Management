@@ -37,6 +37,17 @@ class Sitter(Base):
             db_session.commit()
             return sitter
         return None
+    
+    @staticmethod
+    def update_sitter_status_on_new_day(db_session, sitter_id):
+        print(f"Updating sitter status for sitter with id {sitter_id}")
+        sitter = db_session.query(Sitter).filter_by(id=sitter_id).first()
+        if sitter:
+            sitter.status = "off_duty"
+            db_session.commit()
+            return sitter
+        return None    
+
 
     @staticmethod
     def create_sitter(db_session, sitter: dict):
@@ -199,6 +210,7 @@ class DailyPayment(Base):
     amount = Column(Float, default=3000)
     number_of_babies = Column(Integer, default= 0)
     total_amount = Column(Float, default=0.0)
+    date = Column(DateTime, default=datetime.now())
     payment_date = Column(DateTime, nullable=True)
     is_paid = Column(Boolean, default=False)
 

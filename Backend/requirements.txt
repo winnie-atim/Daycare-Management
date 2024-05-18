@@ -13,3 +13,4 @@ requests
 watchgod
 APScheduler
 python-multipart
+apscheduler
