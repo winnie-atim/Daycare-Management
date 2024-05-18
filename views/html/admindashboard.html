@@ -14,7 +14,8 @@
           height: 100%; 
           margin: 0; 
           padding: 0;
-          overflow: hidden; 
+          /* overflow: hidden;  */
+          overflow-y: auto;
           /* justify-content: center;
           align-items: center; */
       }
@@ -42,7 +43,7 @@
           margin: 10px;
           padding-top: 10px;
           width: 250px; 
-          height: calc(100vh - 20px);
+          /* height: calc(100vh - 20px); */
           float: left; 
           overflow-y: auto; 
       }
@@ -71,14 +72,11 @@
     <title>Admin Dashboard</title>
 </head>
 <body>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" id = "nav-text" href="#">Daystar Day Care System</a>
             <div class="d-flex align-items-center">
-              <!-- Add an ID to the image for easy reference -->
               <img id="admin-profile-image" src="../../public/images/dayimage.jpg" alt="Admin" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
-              <!-- Add an ID to the header where the name will be displayed -->
               <span id="admin-name" class="navbar-text"></span>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
@@ -146,8 +144,7 @@
           </div>
          
         </div>
-  
-  </div> 
+    </div> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/8bd93dfcff.js" crossorigin="anonymous"></script>
     <!-- <script src="../../public/js/payment.js"></script> -->
