@@ -252,12 +252,25 @@ class PresentBaby(Base):
         return None
     
 class ProcurementItem(Base):
-    __tablename__ = 'procurement_item'
+    __tablename__ = 'procurement_items'
     id = Column(Integer, primary_key=True, index=True)
-    item_name = Column(String)
-    price = Column(Float)
-    is_resold_to_babies = Column(Boolean, default=False)
-    sold_to_babies = Column(Integer, ForeignKey('baby.id'))
+    name = Column(String, nullable=False)
+    category = Column(String, nullable=False)
+    quantity = Column(Integer, default=0)
+    price = Column(Float, nullable=False)
+    date_added = Column(DateTime, default=datetime.utcnow)
+
+class Sales(Base):
+    __tablename__ = 'sales'
+    id = Column(Integer, primary_key=True, index=True)
+    item_id = Column(Integer, ForeignKey('procurement_items.id'))
+    quantity_sold = Column(Integer, nullable=False)
+    sale_date = Column(DateTime, default=datetime.utcnow)
+    total_amount = Column(Float, nullable=False)
+
+    item = relationship("ProcurementItem", back_populates="sales")
+
+ProcurementItem.sales = relationship("Sales", order_by=Sales.id, back_populates="item")
 
 Base.metadata.create_all(engine)
 # Base.metadata.drop_all(engine)
