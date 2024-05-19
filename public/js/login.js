@@ -15,40 +15,40 @@ document.addEventListener('DOMContentLoaded', function() {
     loginForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // if (!validate()) {
-        //     console.log("Validation failed.");
-        //     return; 
-        // }
+        if (!validate()) {
+            console.log("Validation failed.");
+            return; 
+        }
 
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value.trim();
 
-        // // Validate inputs here if needed
-        // function validate() {
-        //     let isValid = true;
     
-        //     const fields = [
+        function validate() {
+            let isValid = true;
+    
+            const fields = [
 
-        //         { id: 'email', errorMessage: "Email is required", extraCheck: (value) => !value.includes('@'), extraMessage: "Please enter a valid email" },
-        //         { id: 'password', errorMessage: "Password is required", extraCheck: (value) => value.length < 8, extraMessage: "Password must be at least 8 characters" }
-        //     ];
+                { id: 'email', errorMessage: "Email is required", extraCheck: (value) => !value.includes('@'), extraMessage: "Please enter a valid email" },
+                { id: 'password', errorMessage: "Password is required", extraCheck: (value) => value.length < 8, extraMessage: "Password must be at least 8 characters" }
+            ];
     
-        //     fields.forEach(field => {
-        //         const input = document.getElementById(field.id);
-        //         const value = input.value.trim();
-        //         if (value === "") {
-        //             setError(input, field.errorMessage);
-        //             isValid = false;
-        //         } else if (field.extraCheck && field.extraCheck(value)) {
-        //             setError(input, field.extraMessage);
-        //             isValid = false;
-        //         } else {
-        //             setSuccess(input);
-        //         }
-        //     });
+            fields.forEach(field => {
+                const input = document.getElementById(field.id);
+                const value = input.value.trim();
+                if (value === "") {
+                    setError(input, field.errorMessage);
+                    isValid = false;
+                } else if (field.extraCheck && field.extraCheck(value)) {
+                    setError(input, field.extraMessage);
+                    isValid = false;
+                } else {
+                    setSuccess(input);
+                }
+            });
     
-        //     return isValid;
-        // }
+            return isValid;
+        }
 
         fetch('http://127.0.0.1:8014/auth/login', {
             method: 'POST',
@@ -70,6 +70,18 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch((error) => {
             console.error('Error:', error);
             showNotification("Failed to login: ", 'error');
+
         });
     });
+
+    function setSuccess(element) {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector(".error");
+
+        if (errorDisplay) {
+            errorDisplay.innerText = "";
+            inputControl.classList.add("success");
+            inputControl.classList.remove("error");
+        }
+    }
 });

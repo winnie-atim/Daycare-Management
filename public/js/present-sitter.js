@@ -9,6 +9,36 @@ function showNotification(message, type) {
     }, 3000);
 }
 
+function sendSignupToken() {
+    const email = document.getElementById('email').value.trim();
+    const adminId = document.getElementById('admin_id').value;
+
+    const payload = {
+        email: email,
+        admin_id: parseInt(adminId)
+    };
+
+    fetch('http://127.0.0.1:8014/admins/generate_signup_token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status_code === 200) {
+            showNotification('Signup token sent successfully!', 'success');
+        } else {
+            showNotification('Failed to send signup token: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Error sending signup token.', 'error');
+    });
+}
+
 
 document.addEventListener('DOMContentLoaded', function() {
     loadContent('babiesform.html');
@@ -180,18 +210,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchAllData() {
-        Promise.all([
-            fetch('http://127.0.0.1:8014/babies/get_all_present_babies').then(response => response.json()),
-            fetch('http://127.0.0.1:8014/babies/get_release_baby').then(response => response.json())
-        ])
-        .then(([presentData, releasedData]) => {
-            const releasedIds = new Set(releasedData.data.map(baby => baby.baby_id));
-            displayPresentBabies(presentData.data.filter(baby => !releasedIds.has(baby.id)));
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            showNotification('Failed to fetch data', 'error');
-        });
+        console.log("Fetching present babies...");
+        fetch('http://127.0.0.1:8014/babies/get_all_present_babies')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Data received:", data);
+                displayPresentBabies(data.data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                showNotification("Failed to fetch data", 'error');
+            });
     }
 
     function displayPresentBabies(presentBabies) {
@@ -210,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+
     function releaseBaby(babyId, sitterId) {
         const body = { baby_id: babyId, sitter_id: sitterId };
         fetch('http://127.0.0.1:8014/babies/release_baby', {
@@ -220,15 +250,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.status_code === 200) {
-                showNotification('Baby released successfully!', 'success');
-                fetchAllData(); 
+                showNotification("Baby successfully released", 'success');
+                fetchAllData(); // Refreshing the data
             } else {
-                showNotification('Failed to release the baby', 'error');
+                showNotification("Failed to release the baby", 'error');
             }
         })
         .catch(error => {
             console.error('Error releasing baby:', error);
-            showNotification('Error releasing the baby', 'error');
+            showNotification("Error releasing the baby", 'error');
         });
     }
 

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Signup Token</title>
+    <style>
+        /* .form-container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        } */
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+            margin-top: 10px;
+        }
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .notification.show {
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Send Signup Token</h2>
+        <form id="signupTokenForm">
+            <input type="email" class="form-control" id="email" placeholder="Enter Email Address" required>
+            <input type="hidden" id="admin_id" value="1"> <!-- Replace with dynamic admin ID if needed -->
+            <button type="button" class="btn btn-primary" onclick="sendSignupToken()">Send Token</button>
+        </form>
+        
+    </div>
+    <div id="notification" class="notification"></div>
+    <script>
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.remove('error');
+            if (type === 'error') {
+                notification.classList.add('error');
+            }
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function sendSignupToken() {
+            const email = document.getElementById('email').value.trim();
+            const adminId = document.getElementById('admin_id').value;
+
+            const payload = {
+                email: email,
+                admin_id: parseInt(adminId)
+            };
+
+            fetch('http://127.0.0.1:8014/admins/generate_signup_token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status_code === 200) {
+                    showNotification('Signup token sent successfully!', 'success');
+                } else {
+                    showNotification('Failed to send signup token: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Error sending signup token.', 'error');
+            });
+        }
+    </script>
+</body>
+</html>

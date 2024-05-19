@@ -89,18 +89,18 @@ def send_signup_token_email(email, token, role):
     server.quit()
     
 async def create_admin_controller(db_session: Session, admin: dict):
-    print("""Validating token""")
-    email = admin["email"]
-    signup_token = admin["token"]
+    # print("""Validating token""")
+    # email = admin["email"]
+    # signup_token = admin["token"]
 
-    try:
-        if not AdminSignUpToken.validate_token(db_session, email, signup_token):
-            raise Exception("Invalid token")
-    except Exception as e:
-        print(f"Error occurred during token validation: {e}")
-        return {"message": str(e), "status": 400}  
+    # try:
+    #     if not AdminSignUpToken.validate_token(db_session, email, signup_token):
+    #         raise Exception("Invalid token")
+    # except Exception as e:
+    #     print(f"Error occurred during token validation: {e}")
+    #     return {"message": str(e), "status": 400}  
     
-    admin.pop("token", None)
+    # admin.pop("token", None)
     
     print("""Creating admin""")
     new_admin = Admin(**admin)

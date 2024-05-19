@@ -29,6 +29,7 @@ async def read_root():
 async def create_baby_route(baby: dict, db: Session = Depends(get_db)):
     try:
         created_baby = create_baby_controller(db, baby)
+        print(f"c_baby: {created_baby}")
         if created_baby:
             add_baby_to_present(db, created_baby['data'].id)
             return {

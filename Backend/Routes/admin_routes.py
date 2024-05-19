@@ -28,6 +28,9 @@ async def generate_signup_token_for_admin(emailbody: dict):
         return_data = await generate_signup_token(email,admin_id,"admin")
         if return_data:
             return {
+                "message": "Token generated successfully",
+                "status_code": 200,
+                "data" : {
                 "id": return_data["id"],
                 "email": email, 
                 "token": return_data["token"],
@@ -35,6 +38,8 @@ async def generate_signup_token_for_admin(emailbody: dict):
                 "time": return_data["time"],
                 "added_by": return_data["added_by"],
                 }
+            }
+           
         else:
             raise HTTPException(status_code=400, detail="Unable to generate token")
     except Exception as e:

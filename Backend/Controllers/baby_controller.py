@@ -38,15 +38,15 @@ def create_baby_controller(db: Session, baby_data: dict):
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
     
 def generate_access_number(db: Session):
-    print("""Generating Baby Access """)
+    print("Generating Baby Access")
     last_baby = db.query(Baby).order_by(Baby.id.desc()).first()
-    if last_baby.baby_access is None:
+    if not last_baby or last_baby.baby_access is None:
         return "A00001"
     else:
         letter, number_str = last_baby.baby_access[0], last_baby.baby_access[1:]
         number = int(number_str) + 1
         if number > 99999:
-            letter = chr(ord(letter) + 1) 
+            letter = chr(ord(letter) + 1)
             number = 1
 
         return f"{letter}{number:05d}"
@@ -155,7 +155,7 @@ def get_present_babies(db: Session) -> Dict[str, Any]:
                           .options(joinedload(PresentBaby.Baby))
                           .all())
         if present_babies:
-            serialized_babies = [serialize_baby(present_baby.baby) for present_baby in present_babies]
+            serialized_babies = [serialize_baby(present_baby.Baby) for present_baby in present_babies]
             return {
                 "message": "Babies retrieved successfully",
                 "status_code": 200,

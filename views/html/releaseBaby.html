@@ -58,7 +58,6 @@
     </style>
 </head>
 <body>
-    <!-- <h2 style="text-align:center;">Present Babies List</h2> -->
     <table>
         <thead>
             <tr>
@@ -72,36 +71,35 @@
     </table>
     <div id="notification" class="notification"></div>
     <script>
-    function showNotification(message, type) {
-    const notification = document.getElementById('notification');
-    notification.textContent = message;
-    notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
-    notification.classList.add('show');
-    
-    setTimeout(() => {
-        notification.classList.remove('show');
-    }, 3000);
-}
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             fetchAllData();
         });
-    
+
         function fetchAllData() {
-            Promise.all([
-                fetch('http://127.0.0.1:8014/babies/get_all_present_babies').then(response => response.json()),
-                fetch('http://127.0.0.1:8014/babies/get_release_baby').then(response => response.json())
-            ])
-            .then(([presentData, releasedData]) => {
-                const releasedIds = new Set(releasedData.data.map(baby => baby.baby_id));
-                displayPresentBabies(presentData.data.filter(baby => !releasedIds.has(baby.id)));
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                // alert('Failed to fetch data.');
-                showNotification("Failed to fetch data", 'error');
-            });
+            console.log("Fetching present babies...");
+            fetch('http://127.0.0.1:8014/babies/get_all_present_babies')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Data received:", data);
+                    displayPresentBabies(data.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    showNotification("Failed to fetch data", 'error');
+                });
         }
-    
+
         function displayPresentBabies(presentBabies) {
             const tableBody = document.getElementById('babiesTableBody');
             tableBody.innerHTML = ''; // Clear existing entries
@@ -117,7 +115,7 @@
                 tableBody.innerHTML += row;
             });
         }
-    
+
         function releaseBaby(babyId, sitterId) {
             const body = { baby_id: babyId, sitter_id: sitterId };
             fetch('http://127.0.0.1:8014/babies/release_baby', {
@@ -128,21 +126,18 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status_code === 200) {
-
                     showNotification("Baby successfully released", 'success');
-                    fetchAllData(); // Refreshing the data
+                    fetchAllData(); // Refresh data
                 } else {
-                    // alert('Failed to release the baby: ' + data.message);
                     showNotification("Failed to release the baby", 'error');
                 }
             })
             .catch(error => {
                 console.error('Error releasing baby:', error);
-                // alert('Error releasing the baby.');
                 showNotification("Error releasing the baby", 'error');
             });
         }
     </script>
-    
 </body>
+
 </html>
