@@ -91,7 +91,7 @@
         });
 
         function fetchSitters() {
-    fetch('http://127.0.0.1:8014/sitters/get_all_sitters')
+    fetch('https://daycare-management.onrender.com/sitters/get_all_sitters')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
@@ -123,7 +123,7 @@ function populateTable(sitters) {
 }
 
 function markPresent(sitterId, element) {
-    fetch(`http://127.0.0.1:8014/sitters/present_sitter/?sitter_id=${sitterId}`, {
+    fetch(`https://daycare-management.onrender.com/sitters/present_sitter/?sitter_id=${sitterId}`, {
         method: 'POST'
     })
     .then(response => response.json())

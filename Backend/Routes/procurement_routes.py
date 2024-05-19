@@ -12,22 +12,22 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/procurement/items", response_model=ProcurementItem)
-async def create_procurement_item(item: ProcurementItemCreate, db: Session = Depends(get_db)):
-    db_item = ProcurementItem(**item.dict())
+@router.post("/items")
+async def create_procurement_item(item: dict, db: Session = Depends(get_db)):
+    db_item = ProcurementItem(**item)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
     return db_item
 
-@router.get("/procurement/items", response_model=List[ProcurementItem])
+@router.get("/items")
 async def read_procurement_items(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     items = db.query(ProcurementItem).offset(skip).limit(limit).all()
     return items
 
-@router.post("/sales", response_model=Sales)
-async def create_sale(sale: SaleCreate, db: Session = Depends(get_db)):
-    db_sale = Sales(**sale.dict())
+@router.post("/sales")
+async def create_sale(sale: dict, db: Session = Depends(get_db)):
+    db_sale = Sales(**sale)
     item = db.query(ProcurementItem).filter(ProcurementItem.id == sale.item_id).first()
     if item:
         if item.quantity < sale.quantity_sold:

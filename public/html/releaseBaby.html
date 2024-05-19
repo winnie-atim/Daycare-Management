@@ -88,7 +88,7 @@
 
         function fetchAllData() {
             console.log("Fetching present babies...");
-            fetch('http://127.0.0.1:8014/babies/get_all_present_babies')
+            fetch('https://daycare-management.onrender.com/babies/get_all_present_babies')
                 .then(response => response.json())
                 .then(data => {
                     console.log("Data received:", data);
@@ -118,7 +118,7 @@
 
         function releaseBaby(babyId, sitterId) {
             const body = { baby_id: babyId, sitter_id: sitterId };
-            fetch('http://127.0.0.1:8014/babies/release_baby', {
+            fetch('https://daycare-management.onrender.com/babies/release_baby', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)

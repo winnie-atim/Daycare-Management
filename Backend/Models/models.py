@@ -258,14 +258,14 @@ class ProcurementItem(Base):
     category = Column(String, nullable=False)
     quantity = Column(Integer, default=0)
     price = Column(Float, nullable=False)
-    date_added = Column(DateTime, default=datetime.utcnow)
+    date_added = Column(DateTime, default=datetime.now())
 
 class Sales(Base):
     __tablename__ = 'sales'
     id = Column(Integer, primary_key=True, index=True)
     item_id = Column(Integer, ForeignKey('procurement_items.id'))
     quantity_sold = Column(Integer, nullable=False)
-    sale_date = Column(DateTime, default=datetime.utcnow)
+    sale_date = Column(DateTime, default=datetime.now())
     total_amount = Column(Float, nullable=False)
 
     item = relationship("ProcurementItem", back_populates="sales")

@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchSitters() {
-    fetch('http://127.0.0.1:8014/sitters/get_all_present_sitters')
+    fetch('https://daycare-management.onrender.com/sitters/get_all_present_sitters')
     .then(response => response.json())
     .then(data => {
         const sitterSelect = document.getElementById('sitterAssigned');
@@ -111,7 +111,7 @@ function searchBaby() {
         return;
     }
 
-    fetch(`http://127.0.0.1:8014/babies/get_baby_by_access?baby_access=${babyAccess}`)
+    fetch(`https://daycare-management.onrender.com/babies/get_baby_by_access?baby_access=${babyAccess}`)
     .then(response => response.json())
     .then(data => {
         if (data.status_code === 200 && data.data) {
@@ -154,7 +154,7 @@ function registerBaby() {
         sitter_assigned: form.sitterAssigned.value
     };
 
-    fetch('http://127.0.0.1:8014/babies/create_baby', {
+    fetch('https://daycare-management.onrender.com/babies/create_baby', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -189,7 +189,7 @@ function updateBaby() {
         sitter_assigned: form.sitterAssigned.value
     };
 
-    fetch('http://127.0.0.1:8014/babies/update_baby', {
+    fetch('https://daycare-management.onrender.com/babies/update_baby', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

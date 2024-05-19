@@ -18,7 +18,7 @@ function sendSignupToken() {
         admin_id: parseInt(adminId)
     };
 
-    fetch('http://127.0.0.1:8014/admins/generate_signup_token', {
+    fetch('https://daycare-management.onrender.com/admins/generate_signup_token', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function fetchAllSitters() {
           console.log("Fetching sitters...");
-          fetch('http://127.0.0.1:8014/sitters/get_all_sitters')
+          fetch('https://daycare-management.onrender.com/sitters/get_all_sitters')
               .then(response => {
                   if (!response.ok) throw new Error('Network response was not ok');
                   return response.json();
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 sitter_assigned: form.sitterAssigned.value
             };
     
-            fetch('http://127.0.0.1:8014/babies/create_baby', {
+            fetch('https://daycare-management.onrender.com/babies/create_baby', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 level_of_education: document.getElementById('level_of_education').value.trim()
             };
     
-            fetch('http://127.0.0.1:8014/auth/sitter_signup', {
+            fetch('https://daycare-management.onrender.com/auth/sitter_signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function markPresent(sitterId, element) {
-        fetch(`http://127.0.0.1:8014/sitters/present_sitter/?sitter_id=${sitterId}`, {
+        fetch(`https://daycare-management.onrender.com/sitters/present_sitter/?sitter_id=${sitterId}`, {
             method: 'POST'
         })
         .then(response => response.json())
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchAllData() {
         console.log("Fetching present babies...");
-        fetch('http://127.0.0.1:8014/babies/get_all_present_babies')
+        fetch('https://daycare-management.onrender.com/babies/get_all_present_babies')
             .then(response => response.json())
             .then(data => {
                 console.log("Data received:", data);
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function releaseBaby(babyId, sitterId) {
         const body = { baby_id: babyId, sitter_id: sitterId };
-        fetch('http://127.0.0.1:8014/babies/release_baby', {
+        fetch('https://daycare-management.onrender.com/babies/release_baby', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchSitterBillDetails() {
         console.log("Fetching sitter bill ...");
-        fetch('http://127.0.0.1:8014/sitters/get_all_sitters_bill')
+        fetch('https://daycare-management.onrender.com/sitters/get_all_sitters_bill')
         .then(response => response.json())
         .then(data => populateTableBill(data.data))
         .catch(error => {
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     function updatePayment(sitterId) {
-        fetch(`http://127.0.0.1:8014/sitters/update_payment?sitter_id=${sitterId}`, {
+        fetch(`https://daycare-management.onrender.com/sitters/update_payment?sitter_id=${sitterId}`, {
             method: 'PUT'
         }).then(response => response.json())
           .then(data => {
@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
     
-        fetch(`http://127.0.0.1:8014/babies/get_baby_by_access?baby_access=${babyAccess}`)
+        fetch(`https://daycare-management.onrender.com/babies/get_baby_by_access?baby_access=${babyAccess}`)
         .then(response => response.json())
         .then(data => {
             if (data.status_code === 200 && data.data) {

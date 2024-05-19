@@ -31,7 +31,7 @@ function populateTable(data) {
 }
 
 function updatePayment(sitterId) {
-    fetch(`http://127.0.0.1:8014/sitters/update_payment?sitter_id=${sitterId}`, {
+    fetch(`https://daycare-management.onrender.com/sitters/update_payment?sitter_id=${sitterId}`, {
         method: 'PUT'
     }).then(response => response.json())
       .then(data => {

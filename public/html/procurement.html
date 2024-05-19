@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procurement Corner</title>
+    <style>
+        .form-container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .form-control, .form-select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+            margin-left: 10px;
+        }
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2 class="header">Procurement Corner</h2>
+        <form id="procurementForm">
+            <input type="text" class="form-control" id="itemName" placeholder="Item Name">
+            <input type="text" class="form-control" id="category" placeholder="Category">
+            <input type="number" class="form-control" id="quantity" placeholder="Quantity">
+            <input type="number" class="form-control" id="price" placeholder="Price">
+            <button type="button" class="btn btn-primary" onclick="createProcurementItem()">Add Item</button>
+        </form>
+    </div>
+    <div class="form-container">
+        <h2 class="header">Sell Item</h2>
+        <form id="salesForm">
+            <input type="number" class="form-control" id="itemId" placeholder="Item ID">
+            <input type="number" class="form-control" id="quantitySold" placeholder="Quantity Sold">
+            <input type="number" class="form-control" id="totalAmount" placeholder="Total Amount">
+            <button type="button" class="btn btn-primary" onclick="createSale()">Sell Item</button>
+        </form>
+    </div>
+    <div id="notification" class="notification"></div>
+    <script src="../js/procurement.js"></script>  
+    <!-- <script src="procurement.js"></script> -->
+</body>
+</html>
