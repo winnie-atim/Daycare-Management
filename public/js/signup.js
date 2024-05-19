@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             console.log("Success:", data);
-            // alert ("Account created successfully.");
             showNotification("Account created successfully.", 'success');
             window.location.href = '../../views/html/admindashboard.html';
             // Handling success here (e.g., displaying a success message, redirecting, etc.)

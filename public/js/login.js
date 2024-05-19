@@ -61,19 +61,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log('Success:', data);
             if (data.message === "Admin logged in successfully") {
-                // alert("Login successful");
                 showNotification("Login successful", 'success');
                 window.location.href = '../../views/html/admindashboard.html'; 
             } else {
-                // alert("Failed to login: " + (data.detail || "Unknown error"));
                 showNotification("Failed to login ", 'error');
             }
         })
         .catch((error) => {
             console.error('Error:', error);
-            // alert("failed to login");
             showNotification("Failed to login: ", 'error');
-
         });
     });
 });

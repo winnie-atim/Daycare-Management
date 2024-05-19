@@ -39,6 +39,25 @@
             background-color: #cccccc;
             cursor: not-allowed;
         }
+
+        
+.notification {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f44336;
+    color: white;
+    padding: 16px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.notification.show {
+    display: block;
+}
     </style>
 </head>
 <body>
@@ -55,8 +74,19 @@
         </thead>
         <tbody id="paymentTableBody"></tbody>
     </table>
+    <div id="notification" class="notification"></div>
 
     <script>
+    function showNotification(message, type) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
         document.addEventListener('DOMContentLoaded', () => {
             fetchSitterBillDetails();
         });
@@ -98,14 +128,15 @@
             }).then(response => response.json())
               .then(data => {
                   if (data.status_code === 200) {
-                      alert('Payment status updated successfully!');
+                      showNotification("Payment status updated successfully", 'success');
+
                       fetchSitterBillDetails();  // Refresh the data
                   } else {
-                      alert('Failed to update payment status: ' + data.message);
+                      showNotification("Failed to update payment status", 'error');
                   }
               }).catch(error => {
                   console.error('Error updating payment status:', error);
-                  alert('Failed to update payment status.');
+                  showNotification("Failed to update payment status", 'error');
               });
         }
     </script>

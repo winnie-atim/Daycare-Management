@@ -1,3 +1,14 @@
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+    notification.classList.add('show');
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const sitterForm = document.getElementById('sitterForm');
 
@@ -35,15 +46,16 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log('Success:', data);
             if (data.message === 'Sitter created successfully') {
-                alert('Sitter registered successfully!');
+                showNotification('Sitter registered successfully', 'success');
                 sitterForm.reset();
             } else {
-                alert('Failed to register sitter.');
+                showNotification('Failed to register sitter', 'error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error registering sitter.');
+            showNotification('Error registering sitter', 'error');
+
         });
     });
 });

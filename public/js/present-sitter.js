@@ -170,12 +170,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 element.classList.add('btn-success');
                 element.disabled = true; 
             } else {
-                alert('Failed to mark as present');
+                showNotification('Failed to mark as present', 'error');
             }
         })
         .catch(error => {
             console.error('Error marking sitter as present:', error);
-            alert('Error marking sitter as present');
+            showNotification('Error marking sitter as present', 'error');
         });
     }
 
@@ -190,13 +190,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error fetching data:', error);
-            alert('Failed to fetch data.');
+            showNotification('Failed to fetch data', 'error');
         });
     }
 
     function displayPresentBabies(presentBabies) {
         const tableBody = document.getElementById('babiesTableBody');
-        tableBody.innerHTML = ''; // Clearing existing entries
+        tableBody.innerHTML = ''; 
         presentBabies.forEach(baby => {
             const row = `
                 <tr id="baby-${baby.id}">
@@ -220,15 +220,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.status_code === 200) {
-                alert('Baby successfully released!');
+                showNotification('Baby released successfully!', 'success');
                 fetchAllData(); 
             } else {
-                alert('Failed to release the baby: ' + data.message);
+                showNotification('Failed to release the baby', 'error');
             }
         })
         .catch(error => {
             console.error('Error releasing baby:', error);
-            alert('Error releasing the baby.');
+            showNotification('Error releasing the baby', 'error');
         });
     }
 
@@ -268,14 +268,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(response => response.json())
           .then(data => {
               if (data.status_code === 200) {
-                  alert('Payment status updated successfully!');
+                  showNotification('Payment status updated successfully', 'success');
                   fetchSitterBillDetails();  // Refresh the data
               } else {
-                  alert('Failed to update payment status: ' + data.message);
+                  showNotification('Failed to update payment status', 'error');
               }
           }).catch(error => {
-              console.error('Error updating payment status:', error);
-              alert('Failed to update payment status.');
+              showNotification('Failed to update payment status', 'error');
           });
     }
 
@@ -309,7 +308,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('nameofparent').value = baby.name_of_parent;
         document.getElementById('fee').value = baby.fee;
         document.getElementById('sitterAssigned').value = baby.sitter_assigned;
-    
         document.getElementById('updateButton').style.display = 'inline-block';
         document.getElementById('registerButton').style.display = 'none';
         document.getElementById('registerBabyForm').setAttribute('data-baby-access', baby.baby_access);

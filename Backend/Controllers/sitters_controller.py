@@ -53,6 +53,14 @@ def paysitter(db: Session, sitter_id: int):
 def present_sitter(db: Session, sitter_id: int):
     print(f"Presenting sitter with id: {sitter_id}")
     try:
+        today = date.today()
+        daily_payment = db.query(DailyPayment).filter_by(sitter_id=sitter_id).filter(func.date(DailyPayment.date) == today).first()
+
+        if not daily_payment:
+            new_payment = DailyPayment(sitter_id=sitter_id, date=datetime.now())
+            db.add(new_payment)
+            db.commit()
+
         new_present = PresentSitter(sitter_id=sitter_id, date=datetime.now())
         Sitter.update_sitter_status(db, sitter_id)
         db.add(new_present)
@@ -61,7 +69,6 @@ def present_sitter(db: Session, sitter_id: int):
             "message": "Sitter marked present",
             "status_code": 200
         }
-    
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")

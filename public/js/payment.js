@@ -1,25 +1,13 @@
-// function loadContent(pageUrl) {
-//     fetch(pageUrl)
-//         .then(response => response.text())
-//         .then(html => {
-//             const mainContent = document.getElementById('main-content');
-//             mainContent.innerHTML = html;
-            
-//             Array.from(mainContent.querySelectorAll("script")).forEach(oldScript => {
-//                 const newScript = document.createElement("script");
-//                 newScript.text = oldScript.text;
-//                 oldScript.parentNode.replaceChild(newScript, oldScript);
-//             });
-            
-//             if(pageUrl === 'presentSitter.html') {
-//                 fetchSitterBillDetails();
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error loading the page: ', error);
-//             mainContent.innerHTML = '<p>Error loading the content.</p>';
-//         });
-// }
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+    notification.classList.add('show');
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
 
 function populateTable(data) {
     const tableBody = document.getElementById('paymentTableBody');
@@ -48,13 +36,14 @@ function updatePayment(sitterId) {
     }).then(response => response.json())
       .then(data => {
           if (data.status_code === 200) {
-              alert('Payment status updated successfully!');
-              fetchSitterBillDetails();  // Refresh the data
+              showNotification('Payment status updated successfully', 'success');
+
+              fetchSitterBillDetails();  
           } else {
-              alert('Failed to update payment status: ' + data.message);
+              showNotification('Failed to update payment status', 'error');
           }
       }).catch(error => {
           console.error('Error updating payment status:', error);
-          alert('Failed to update payment status.');
+          showNotification('Failed to update payment status', 'error');
       });
 }
