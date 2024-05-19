@@ -243,11 +243,12 @@ class PresentBaby(Base):
 
     @staticmethod
     def update_stats_left(db_session, baby_id):
-        baby = db_session.query(PresentBaby).filter_by(baby_id=baby_id).first()
-        if baby:
-            baby.status = "left"
+        babies = db_session.query(PresentBaby).filter(PresentBaby.baby_id == baby_id).all()
+        if babies:
+            for baby in babies:
+                baby.status = "left"
             db_session.commit()
-            return baby
+            return babies
         return None
     
 class ProcurementItem(Base):
