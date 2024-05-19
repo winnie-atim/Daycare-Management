@@ -40,7 +40,7 @@ function generatePDF(baby) {
     
 
      const logo = new Image();
-     logo.src = '../../public/images/badge.jpg';  
+     logo.src = '../images/badge.jpg';  
      logo.onload = () => {
          doc.addImage(logo, 'PNG', 10, 10, 50, 20);  
  

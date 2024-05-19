@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Success:', data);
             if (data.message === "Admin logged in successfully") {
                 showNotification("Login successful", 'success');
-                window.location.href = '../../views/html/admindashboard.html'; 
+                window.location.href = 'admindashboard.html'; 
             } else {
                 showNotification("Failed to login ", 'error');
             }
