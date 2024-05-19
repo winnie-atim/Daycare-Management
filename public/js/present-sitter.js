@@ -14,41 +14,33 @@ document.addEventListener('DOMContentLoaded', function() {
     loadContent('babiesform.html');
 });
 
-// function fetchSitters() {
-//     fetch('http://127.0.0.1:8014/sitters/get_all_present_sitters')
-//     .then(response => response.json())
-//     .then(data => {
-//         const sitterSelect = document.getElementById('sitterAssigned');
-//         data.data.forEach(sitter => {
-//             const option = document.createElement('option');
-//             option.value = sitter.sitter.id;
-//             option.textContent = sitter.sitter.name;
-//             sitterSelect.appendChild(option);
-//         });
-//     })
-//     .catch(error => console.error('Error fetching sitters:', error));
-// }
-function loadContent(pageUrl) {
-    fetch(pageUrl)
-        .then(response => response.text())
-        .then(html => {
-            const mainContent = document.getElementById('main-content');
-            mainContent.innerHTML = html;
-           
-            if (pageUrl === 'allSeaters.html') {
-                fetchAllSitters();
-            }
-            else if (pageUrl === 'releaseBaby.html') {
-                fetchAllData();
-            }
-            if(pageUrl === 'presentSitter.html') {
-                fetchSitterBillDetails();
-            }
-        })
-        .catch(error => {
-            console.error('Error loading the page: ', error);
-            mainContent.innerHTML = '<p>Error loading the content.</p>';
-        });
+    function loadContent(pageUrl) {
+        fetch(pageUrl)
+            .then(response => response.text())
+            .then(html => {
+                const mainContent = document.getElementById('main-content');
+                mainContent.innerHTML = html;
+                executePageScripts(pageUrl);
+            })
+            .catch(error => {
+                console.error('Error loading the page: ', error);
+                const mainContent = document.getElementById('main-content');
+                mainContent.innerHTML = '<p>Error loading the content.</p>';
+            });
+    }
+
+    function executePageScripts(pageUrl) {
+        if (pageUrl === 'babiesform.html') {
+            registerBabyForm();
+        } else if (pageUrl === 'newSitter.html') {
+            registerSitterForm();
+        } else if (pageUrl === 'allSeaters.html') {
+            fetchAllSitters();
+        } else if (pageUrl === 'releaseBaby.html') {
+            fetchAllData();
+        } else if (pageUrl === 'presentSitter.html') {
+            fetchSitterBillDetails();
+        }
     }
     function fetchAllSitters() {
           console.log("Fetching sitters...");
@@ -65,6 +57,87 @@ function loadContent(pageUrl) {
                   console.error('Error fetching sitters:', error);
               });
       }
+
+      function registerBabyForm() {
+        const form = document.getElementById('registerBabyForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = {
+                name: form.babyname.value,
+                gender: form.gender.value,
+                age: form.age.value,
+                location: form.location.value,
+                name_of_brought_person: form.nameofguardian.value,
+                time_of_arrival: form.timeOfArrival.value,
+                name_of_parent: form.nameofparent.value,
+                fee: form.fee.value,
+                sitter_assigned: form.sitterAssigned.value
+            };
+    
+            fetch('http://127.0.0.1:8014/babies/create_baby', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status_code === 200) {
+                    showNotification('Baby registered successfully!', 'success');
+                    form.reset();
+                } else {
+                    showNotification('Failed to register baby: ' + data.message, 'error');
+                }
+            })
+            .catch(error => console.error('Error registering baby:', error));
+        });
+    }
+
+    function registerSitterForm() {
+        const sitterForm = document.getElementById('sitterForm');
+        sitterForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                location: document.getElementById('location').value.trim(),
+                date_of_birth: document.getElementById('date_of_birth').value,
+                contact: document.getElementById('contact').value.trim(),
+                gender: document.getElementById('gender').value,
+                next_of_kin: document.getElementById('next_of_kin').value.trim(),
+                NIN: document.getElementById('NIN').value.trim(),
+                recommended_by: document.getElementById('recommended_by').value.trim(),
+                religion: document.getElementById('religion').value.trim(),
+                level_of_education: document.getElementById('level_of_education').value.trim()
+            };
+    
+            fetch('http://127.0.0.1:8014/auth/sitter_signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to register sitter: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.message === 'Sitter created successfully') {
+                    showNotification('Sitter registered successfully!', 'success');
+                    sitterForm.reset();
+                } else {
+                    showNotification('Failed to register sitter.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Error registering sitter.', 'error');
+            });
+        });
+    }
 
       function populateTable(sitters) {
         const tableBody = document.getElementById('sittersTableBody');
@@ -148,7 +221,7 @@ function loadContent(pageUrl) {
         .then(data => {
             if (data.status_code === 200) {
                 alert('Baby successfully released!');
-                fetchAllData(); // Refreshing the  data
+                fetchAllData(); 
             } else {
                 alert('Failed to release the baby: ' + data.message);
             }

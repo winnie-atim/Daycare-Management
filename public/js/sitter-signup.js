@@ -16,14 +16,15 @@ document.addEventListener('DOMContentLoaded', function() {
             religion: document.getElementById('religion').value.trim(),
             level_of_education: document.getElementById('level_of_education').value.trim()
         };
+
         console.log(formData);
-        fetch(sitterForm.action, {
-            method: sitterForm.method,
+
+        fetch('http://127.0.0.1:8014/sitters/create_sitter', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
-            
         })
         .then(response => {
             if (!response.ok) {
@@ -36,13 +37,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.message === 'Sitter created successfully') {
                 alert('Sitter registered successfully!');
                 sitterForm.reset();
-            }
-            else {
+            } else {
                 alert('Failed to register sitter.');
             }
-            
         })
-        .catch((error) => {
+        .catch(error => {
             console.error('Error:', error);
             alert('Error registering sitter.');
         });
