@@ -2,6 +2,8 @@ from Models.models import Sitter, DailyPayment, PresentSitter
 from fastapi import APIRouter, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from datetime import datetime, date
+from sqlalchemy import func
+
 async def create_sitter(db_session: Session, sitter: dict):
     try:
         new_sitter = Sitter.create_sitter(db_session, sitter)
@@ -81,12 +83,15 @@ def get_all_present_sitters(db: Session):
     print("Getting all present sitters")
     try:
         today = date.today()
-        present_sitters = (db.query(PresentSitter).filter(PresentSitter.date == today).options(joinedload(PresentSitter.sitter)).all())
+        present_sitters = (db.query(PresentSitter)
+                           .filter(func.date(PresentSitter.date) == today)
+                           .options(joinedload(PresentSitter.sitter))
+                           .all())
         return {"data": present_sitters}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
-
+    
 def get_sitters_bill(db: Session):
     print("Getting all sitters bill")
     try:
@@ -134,7 +139,6 @@ def get_unpaid_sitters_bill(db: Session):
     print("Getting all unpaid sitters bill")
     try:
         today = date.today()
-        # sitters = (db.query(DailyPayment).filter_by(is_paid=False).options(joinedload(DailyPayment.sitter)).all())
         sitters = (db.query(DailyPayment).filter(DailyPayment.is_paid == False, DailyPayment.date >= today).options(joinedload(DailyPayment.sitter)).all())
         serialized_sitters = []
         for sitter in sitters:
