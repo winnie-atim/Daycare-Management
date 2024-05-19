@@ -128,9 +128,9 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status_code === 200) {
-                    // alert('Baby successfully released!');
+
                     showNotification("Baby successfully released", 'success');
-                    fetchAllData(); // Refresh data
+                    fetchAllData(); // Refreshing the data
                 } else {
                     // alert('Failed to release the baby: ' + data.message);
                     showNotification("Failed to release the baby", 'error');

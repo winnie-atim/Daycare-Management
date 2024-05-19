@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from Controllers.baby_controller import (
     create_baby_controller,
     update_baby,
-    relaese_baby,
+    release_baby,
     get_all_babies,
     add_baby_to_present,
     get_present_babies,
@@ -99,9 +99,9 @@ async def get_baby_by_access_route(baby_access: str, db: Session = Depends(get_d
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
     
 @router.post("/release_baby")
-async def realase_baby_route(baby_data: dict, db: Session = Depends(get_db)):
+async def release_baby_route(baby_data: dict, db: Session = Depends(get_db)):
     try:
-        release = relaese_baby(db, baby_data)
+        release = release_baby(db, baby_data)
         if release:
             return release
         else:

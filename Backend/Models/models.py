@@ -237,9 +237,19 @@ class PresentBaby(Base):
     id = Column(Integer, primary_key=True, index=True)
     baby_id = Column(Integer, ForeignKey('baby.id'))
     date = Column(DateTime)
+    status = Column(String, default="present")
 
     Baby = relationship("Baby", backref="present_babies")
 
+    @staticmethod
+    def update_stats_left(db_session, baby_id):
+        baby = db_session.query(PresentBaby).filter_by(baby_id=baby_id).first()
+        if baby:
+            baby.status = "left"
+            db_session.commit()
+            return baby
+        return None
+    
 class ProcurementItem(Base):
     __tablename__ = 'procurement_item'
     id = Column(Integer, primary_key=True, index=True)

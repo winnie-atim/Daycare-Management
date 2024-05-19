@@ -2,7 +2,8 @@ from Models.models import Baby, BabyRelease, PresentBaby
 from fastapi import APIRouter, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from Controllers.sitters_controller import update_baby_number
-from datetime import datetime
+from datetime import datetime, date
+from sqlalchemy import func
 from sqlalchemy.exc import SQLAlchemyError
 from typing import List, Dict, Any
 
@@ -66,18 +67,23 @@ def update_baby(db: Session,baby_data: dict):
         db.commit()
         return baby
     
-def relaese_baby(db: Session, baby_data):
-    print("""Releasing baby""")
+def release_baby(db: Session, baby_data: dict):
+    print("Releasing baby")
     try:
-        release = BabyRelease(**baby_data)
-        db.add(release)
-        db.commit()
-
-        return {
-            "message": "Baby released successfully",
-            "status_code": 200,
-            "data": release
-        }
+        baby_id = baby_data['baby_id']
+        sitter_id = baby_data['sitter_id']
+        present_baby = PresentBaby.update_stats_left(db, baby_id)
+        if present_baby:
+            release = BabyRelease(**baby_data)
+            db.add(release)
+            db.commit()
+            return {
+                "message": "Baby released successfully",
+                "status_code": 200,
+                "data": release
+            }
+        else:
+            raise HTTPException(status_code=400, detail="Baby not found or already released")
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
@@ -143,9 +149,13 @@ def serialize_baby(baby: Baby) -> Dict[str, Any]:
 def get_present_babies(db: Session) -> Dict[str, Any]:
     print("Getting present babies")
     try:
-        present_babies = db.query(PresentBaby).options(joinedload(PresentBaby.Baby)).all()
+        today = date.today()
+        present_babies = (db.query(PresentBaby)
+                          .filter(func.date(PresentBaby.date) == today, PresentBaby.status == "present")
+                          .options(joinedload(PresentBaby.Baby))
+                          .all())
         if present_babies:
-            serialized_babies = [serialize_baby(baby.Baby) for baby in present_babies]
+            serialized_babies = [serialize_baby(present_baby.baby) for present_baby in present_babies]
             return {
                 "message": "Babies retrieved successfully",
                 "status_code": 200,
@@ -159,6 +169,7 @@ def get_present_babies(db: Session) -> Dict[str, Any]:
             }
     except SQLAlchemyError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
     
 def get_released_babies(db: Session):
     print("""getting released babies""")
