@@ -132,7 +132,9 @@ def create_daily_payment_for_all_sitters(db: Session):
 def get_unpaid_sitters_bill(db: Session):
     print("Getting all unpaid sitters bill")
     try:
-        sitters = (db.query(DailyPayment).filter_by(is_paid=False).options(joinedload(DailyPayment.sitter)).all())
+        today = date.today()
+        # sitters = (db.query(DailyPayment).filter_by(is_paid=False).options(joinedload(DailyPayment.sitter)).all())
+        sitters = (db.query(DailyPayment).filter(DailyPayment.is_paid == False, DailyPayment.date >= today).options(joinedload(DailyPayment.sitter)).all())
         serialized_sitters = []
         for sitter in sitters:
             serialized_sitters.append({
