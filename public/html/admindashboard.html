@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,169 +8,194 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-      body, html {
-          font-family: 'Arial', sans-serif !important;
-          background-color: #f5f5f5;
-          height: 100%; 
-          margin: 0; 
-          padding: 0;
-          /* overflow: hidden;  */
-          overflow-y: auto;
-          /* justify-content: center;
+        body,
+        html {
+            font-family: 'Arial', sans-serif !important;
+            background-color: #f5f5f5;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            /* overflow: hidden;  */
+            overflow-y: auto;
+            /* justify-content: center;
           align-items: center; */
-      }
-      :root {
-        --navbar-bg-color: #900c3f;
-        --sidebar-bg-color: #1511e3;
-        --sidebar-hover-bg-color: #504df6;
-        --text-highlight-color: yellow;
-      	}
-  
-      .navbar {
-          border-radius: 30px;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-          background-color: var(--navbar-bg-color) !important;
-          color: var(--text-highlight-color);
-          
-          margin: 12px 10px;
-          padding: 0 20px;
-          height: 90px; 
-      }
-      #sidebarMenu {
-          border-radius: 20px;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-          background-color: #1511e3 !important;
-          margin: 10px;
-          padding-top: 10px;
-          width: 250px; 
-          /* height: calc(100vh - 20px); */
-          float: left; 
-          overflow-y: auto; 
-      }
-      .main-content {
-          margin-left: 270px; 
-          width: calc(100% - 270px);
-          height: calc(100vh - 24px);
-          overflow-y: auto;
-          padding: 10px;
-          box-sizing: border-box;
-      }
-      #nav-text{
-        color:  yellow;
-        size: yello;
-      }
-      #sidebar-items{
-        background-color: #1511e3 !important;
-        color:  white;
-        height: 60px; 
-      }
-      #sidebar-items:hover {
-    background-color: #504df6 !important; 
-    color: rgb(251, 251, 2); 
-}
-.footer-bottom {
+        }
+
+        :root {
+            --navbar-bg-color: #900c3f;
+            --sidebar-bg-color: #1511e3;
+            --sidebar-hover-bg-color: #504df6;
+            --text-highlight-color: yellow;
+        }
+
+        .navbar {
+            border-radius: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: var(--navbar-bg-color) !important;
+            color: var(--text-highlight-color);
+
+            margin: 12px 10px;
+            padding: 0 20px;
+            height: 90px;
+        }
+
+        #sidebarMenu {
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #900c3f !important;
+            margin: 10px;
+            padding-top: 10px;
+            width: 250px;
+            /* height: calc(100vh - 20px); */
+            float: left;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            height: calc(100vh - 24px);
+            overflow-y: auto;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        #nav-text {
+            color: yellow;
+            size: yello;
+        }
+
+        #sidebar-items {
+            background-color: #900c3f !important;
+            color: yellow;
+            height: 60px;
+        }
+
+        #sidebar-items:hover {
+            background-color: #d39eb2 !important;
+            color: #900c3f;
+        }
+        #sidebar-items:active {
+            background-color: #d39eb2 !important;
+            color: #900c3f;
+        }
+
+        .footer-bottom {
             background-color: #222;
             color: #ccc;
             padding: 10px 0;
             text-align: center;
         }
-</style>
+    </style>
     <title>Admin Dashboard</title>
 </head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-          <a class="navbar-brand" id="nav-text" href="#">Daystar Day Care System</a>
-          <div class="d-flex align-items-center">
-              <img id="admin-profile-image" src="https://daycare-management.vercel.app/images/dayimage.jpg" alt="Admin" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
-              <span id="admin-name" class="navbar-text"></span>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-              </button>
-          </div>
-      </div>
-  </nav>
 
-  <div class="d-flex">
-      <div class="bg-light" id="sidebarMenu" style="width: 250px;">
-          <div class="list-group list-group-flush my-3">
-              <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('babiesform.html');" class="list-group-item list-group-item-action bg-light">Register Baby</a>
-              <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('newSitter.html');" class="list-group-item list-group-item-action bg-light">Register Babysitter</a>
-              <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('allSeaters.html');" class="list-group-item list-group-item-action bg-light">All Sitters</a>
-              <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('releaseBaby.html');" class="list-group-item list-group-item-action bg-light">All Babies</a>
-              <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('presentSitter.html');" class="list-group-item list-group-item-action bg-light">Daily Payment</a>
-              <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('procurement.html');" class="list-group-item list-group-item-action bg-light">Procurement Corner</a>
-              <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('signupToken.html');" class="list-group-item list-group-item-action bg-light">Admin signup token</a>
-              <a href="index.html" id="sidebar-items" class="list-group-item list-group-item-action bg-light">Logout</a>
-          </div>
-          
-      </div>
-      <div class="p-4 w-100" id="main-content">
-          <h1>Welcome to the Admin Dashboard</h1>
-          <div class="Admin-container">
-              <div class="card admin-card" style="width: 18rem;">
-                  <a href="javascript:void(0);" onclick="loadContent('babiesform.html');">
-                      <div class="card-body">
-                          <span><i class="fa-solid fa-baby my-icon"></i></span>
-                          <h5 class="card-title admin-role">Register Baby</h5>
-                      </div>
-                  </a>
-              </div>
-              <div class="card admin-card" style="width: 18rem;">
-                  <a href="javascript:void(0);" onclick="loadContent('newSitter.html');">
-                      <div class="card-body">
-                          <span><i class="fa-solid fa-cart-flatbed my-icon"></i></span>
-                          <h5 class="card-title admin-role">Register Babysitter</h5>
-                      </div>
-                  </a>
-              </div>
-              <div class="card admin-card" style="width: 18rem;">
-                  <a href="javascript:void(0);" onclick="loadContent('presentSitter.html');">
-                      <div class="card-body">
-                          <span><i class="fa-solid fa-money-check-dollar my-icon"></i></span>
-                          <h5 class="card-title admin-role">Payment Monitor</h5>
-                      </div>
-                  </a>
-              </div>
-          </div>
-          <div class="Admin-container">
-              <div class="card admin-card" style="width: 18rem;">
-                  <a href="javascript:void(0);" onclick="loadContent('dataTracker.html');">
-                      <div class="card-body">
-                          <span><i class="fa-solid fa-file-shield my-icon"></i></span>
-                          <h5 class="card-title admin-role">Data Tracker</h5>
-                      </div>
-                  </a>
-              </div>
-              <div class="card admin-card" style="width: 18rem;">
-                  <a href="javascript:void(0);" onclick="loadContent('procurement.html');">
-                      <div class="card-body">
-                          <span><i class="fa-solid fa-person-dress my-icon"></i></span>
-                          <h5 class="card-title admin-role">Procurement Corner</h5>
-                      </div>
-                  </a>
-              </div>
-              <div class="card admin-card" style="width: 18rem;">
-                  <a href="index.html">
-                      <div class="card-body">
-                          <span><i class="fa-solid fa-right-from-bracket my-icon"></i></span>
-                          <h5 class="card-title admin-role">Logout</h5>
-                      </div>
-                  </a>
-              </div>
-          </div>
-      </div>
-  </div>
-  <footer>
-    <div class="footer-bottom py-3">
-    <div class="container">
-        &copy; 2023 Daystar Daycare. All Rights Reserved. Designed by Atim Winnie.
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" id="nav-text" href="#">Daystar Day Care System</a>
+            <div class="d-flex align-items-center">
+                <img id="admin-profile-image" src="https://daycare-management.vercel.app/images/dayimage.jpg"
+                    alt="Admin" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+                <span id="admin-name" class="navbar-text"></span>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
+                    aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="d-flex">
+        <div class="bg-light" id="sidebarMenu" style="width: 250px;">
+            <div class="list-group list-group-flush my-3">
+                <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('babiesform.html');"
+                    class="list-group-item list-group-item-action bg-light">Register Baby</a>
+                <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('newSitter.html');"
+                    class="list-group-item list-group-item-action bg-light">Register Babysitter</a>
+                <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('allSeaters.html');"
+                    class="list-group-item list-group-item-action bg-light">All Sitters</a>
+                <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('releaseBaby.html');"
+                    class="list-group-item list-group-item-action bg-light">All Babies</a>
+                <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('presentSitter.html');"
+                    class="list-group-item list-group-item-action bg-light">Daily Payment</a>
+                <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('procurement.html');"
+                    class="list-group-item list-group-item-action bg-light">Procurement Corner</a>
+                <a href="javascript:void(0);" id="sidebar-items" onclick="loadContent('signupToken.html');"
+                    class="list-group-item list-group-item-action bg-light">Admin signup token</a>
+                <a href="index.html" id="sidebar-items"
+                    class="list-group-item list-group-item-action bg-light">Logout</a>
+            </div>
+
+        </div>
+        <div class="p-4 w-100" id="main-content">
+            <h1>Welcome to the Admin Dashboard</h1>
+            <div class="Admin-container">
+                <div class="card admin-card" style="width: 18rem;">
+                    <a href="javascript:void(0);" onclick="loadContent('babiesform.html');">
+                        <div class="card-body">
+                            <span><i class="fa-solid fa-baby my-icon"></i></span>
+                            <h5 class="card-title admin-role">Register Baby</h5>
+                        </div>
+                    </a>
+                </div>
+                <div class="card admin-card" style="width: 18rem;">
+                    <a href="javascript:void(0);" onclick="loadContent('newSitter.html');">
+                        <div class="card-body">
+                            <span><i class="fa-solid fa-cart-flatbed my-icon"></i></span>
+                            <h5 class="card-title admin-role">Register Babysitter</h5>
+                        </div>
+                    </a>
+                </div>
+                <div class="card admin-card" style="width: 18rem;">
+                    <a href="javascript:void(0);" onclick="loadContent('presentSitter.html');">
+                        <div class="card-body">
+                            <span><i class="fa-solid fa-money-check-dollar my-icon"></i></span>
+                            <h5 class="card-title admin-role">Payment Monitor</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="Admin-container">
+                <div class="card admin-card" style="width: 18rem;">
+                    <a href="javascript:void(0);" onclick="loadContent('dataTracker.html');">
+                        <div class="card-body">
+                            <span><i class="fa-solid fa-file-shield my-icon"></i></span>
+                            <h5 class="card-title admin-role">Data Tracker</h5>
+                        </div>
+                    </a>
+                </div>
+                <div class="card admin-card" style="width: 18rem;">
+                    <a href="javascript:void(0);" onclick="loadContent('procurement.html');">
+                        <div class="card-body">
+                            <span><i class="fa-solid fa-person-dress my-icon"></i></span>
+                            <h5 class="card-title admin-role">Procurement Corner</h5>
+                        </div>
+                    </a>
+                </div>
+                <div class="card admin-card" style="width: 18rem;">
+                    <a href="index.html">
+                        <div class="card-body">
+                            <span><i class="fa-solid fa-right-from-bracket my-icon"></i></span>
+                            <h5 class="card-title admin-role">Logout</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-</footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <footer>
+        <div class="footer-bottom py-3">
+            <div class="container">
+                &copy; 2023 Daystar Daycare. All Rights Reserved. Designed by Atim Winnie.
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/8bd93dfcff.js" crossorigin="anonymous"></script>
-    <script src="https://daycare-management.vercel.app/js/present-sitter.js"></script>    
-    <script src="https://daycare-management.vercel.app/js/register-baby.js"></script>  
+    <script src="https://daycare-management.vercel.app/js/present-sitter.js"></script>
+    <script src="https://daycare-management.vercel.app/js/register-baby.js"></script>
 </body>
+
 </html>
