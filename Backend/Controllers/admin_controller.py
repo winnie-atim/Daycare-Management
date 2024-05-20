@@ -67,17 +67,6 @@ def send_signup_token_email(email, token, role):
 
     msg.attach(MIMEText(html_body, 'html'))
 
-    # firebase_url = 'https://firebasestorage.googleapis.com/v0/b/bfamproject-80d95.appspot.com/o/prod%2Fproducts%2F1705940735027_gen_visual.jpeg?alt=media&token=de7a990b-2238-455f-a6d2-1f0ba71f55d2'
-
-    # response = requests.get(firebase_url)
-    # if response.status_code == 200:
-    #     img_data = response.content
-    #     img = MIMEImage(img_data)
-    #     img.add_header('Content-ID', '<company_logo>')
-    #     msg.attach(img)
-    # else:
-    #     print("Failed to retrieve image from Firebase")
-
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
     try:
@@ -151,7 +140,7 @@ async def generate_reset_token(db: Session, email: str):
         if not admin:
             raise Exception("Email not found")
 
-        token = AdminResetToken.create_token(db, email, admin.id)
+        token = AdminResetToken.create_or_update_token(db, email, admin.id)
         if token:
             send_reset_email(email, token)
             return True
@@ -167,8 +156,23 @@ def send_reset_email(email: str, token: str):
     msg['From'] = EMAIL
     msg['To'] = email
     msg['Subject'] = "Password Reset Request"
-    body = f"Click on the link to reset your password: http://127.0.0.1:5500/public/html/changePassword.html?token={token}"
-    msg.attach(MIMEText(body, 'plain'))
+    
+    body = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; color: #333;">
+            <p>Dear User,</p>
+            <p>Click on the button below to reset your password:</p>
+            <a href="https://daycare-management.vercel.app/html/changePassword.html?token={token}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: white; background-color: #4CAF50; text-align: center; text-decoration: none; border-radius: 5px;">Reset Password</a>
+            <p>If you have any questions or require assistance, our support team is always here to help.</p>
+            <p>Thank you for stepping into this vital role within DayStar Daycare. Together, we'll drive the future of our babies.</p>
+            <p>Warm regards,</p>
+            <p>The DayStar Team</p>
+            <p><i>Note: This is an automated message, please do not reply to this email.</i></p>
+        </body>
+    </html>
+    """
+    
+    msg.attach(MIMEText(body, 'html'))
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
@@ -177,6 +181,7 @@ def send_reset_email(email: str, token: str):
     server.sendmail(EMAIL, email, text)
     server.quit()
 
+    
 def reset_password(db: Session, token: str, new_password: str):
     try:
         valid_token = validate_reset_token(db, token)

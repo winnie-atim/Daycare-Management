@@ -281,15 +281,23 @@ class AdminResetToken(Base):
     admin = relationship("Admin", backref="reset_tokens")
 
     @staticmethod
-    def create_token(db_session, email, admin_id):
+    def create_or_update_token(db_session, email, admin_id):
         from uuid import uuid4
         token = str(uuid4())
-        new_token = AdminResetToken(
-            email=email,
-            token=token,
-            admin_id=admin_id
-        )
-        db_session.add(new_token)
+        token_record = db_session.query(AdminResetToken).filter_by(email=email).first()
+
+        if token_record:
+            token_record.token = token
+            token_record.created_at = datetime.now()
+            token_record.status = "False"
+        else:
+            token_record = AdminResetToken(
+                email=email,
+                token=token,
+                admin_id=admin_id
+            )
+            db_session.add(token_record)
+        
         db_session.commit()
         return token
 
