@@ -115,7 +115,7 @@ class AdminSignUpToken(Base):
     id = Column(Integer, primary_key=True, index=True)
     jti = Column(String, unique=True, nullable=False) 
     email = Column(String, nullable=False)
-    time = Column(DateTime, default=datetime.utcnow)
+    time = Column(DateTime, default=datetime.now())
     status = Column(String, default="False")
     added_by = Column(Integer, ForeignKey('admin.id'))
 
@@ -126,7 +126,7 @@ class AdminSignUpToken(Base):
         existing_token = db_session.query(AdminSignUpToken).filter_by(email=email).first()
         if existing_token:
             existing_token.jti = jti
-            existing_token.time = datetime.utcnow()
+            existing_token.time = datetime.now()
             existing_token.status = "False"
             existing_token.added_by = admin_id
             token_to_return = existing_token
@@ -135,7 +135,6 @@ class AdminSignUpToken(Base):
             db_session.add(new_token_entry)
             db_session.flush()
             token_to_return = new_token_entry
-
         try:
             db_session.commit()
             return {
@@ -163,7 +162,7 @@ class AdminSignUpToken(Base):
             token_validity_period = timedelta(hours=24)
 
             if token_record:
-                token_age = datetime.utcnow() - token_record.time
+                token_age = datetime.now() - token_record.time
                 if token_age <= token_validity_period:
                     token_record.status = "True"
                     db_session.commit()
@@ -173,14 +172,12 @@ class AdminSignUpToken(Base):
                     print(f"Token {token} for email {email} has expired.")
                     return False
             else:
-            
                 print(f"No valid token found for email {email} with token {token}.")
                 return False
         except Exception as e:
             print(f"Exception during token validation for email {email} with token {token}: {e}")
             return False
 
-        
     @staticmethod
     def mark_token_as_used(db_session, jti):
         token_record = db_session.query(AdminSignUpToken).filter(AdminSignUpToken.jti == jti).first()

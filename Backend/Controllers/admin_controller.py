@@ -95,10 +95,12 @@ async def create_admin_controller(db_session: Session, admin: dict):
 
     try:
         if not AdminSignUpToken.validate_token(db_session, email, signup_token):
-            raise Exception("Invalid token")
+            raise HTTPException(status_code=400, detail="Invalid token")
+    except HTTPException as e:
+        raise e
     except Exception as e:
         print(f"Error occurred during token validation: {e}")
-        return {"message": str(e), "status": 400}  
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
     
     admin.pop("token", None)
     
