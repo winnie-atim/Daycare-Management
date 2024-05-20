@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from Connections.connections import SessionLocal
+from Connections.connections import get_db
 from sqlalchemy.orm import Session
 
 from Controllers.sitters_controller import (
@@ -16,13 +16,6 @@ from Controllers.sitters_controller import (
 )
 
 router = APIRouter()
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.get("/")
 async def read_root():

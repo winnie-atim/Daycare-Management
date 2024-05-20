@@ -1,9 +1,10 @@
 from fastapi import HTTPException
+from sqlalchemy.orm import Session
 from Controllers.admin_controller import (
     login_admin
 )
 
-async def login_admin_controller(db, admin_credentials):
+async def login_admin_controller(db: Session, admin_credentials):
     try:
         logged_admin = await login_admin(db, admin_credentials)
         if logged_admin:

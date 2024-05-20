@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from Connections.connections import SessionLocal
+from Connections.connections import get_db
 from sqlalchemy.orm import Session
 
 from Controllers.admin_controller import (
@@ -8,13 +8,6 @@ from Controllers.admin_controller import (
 )
 
 router = APIRouter()
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.get("/")
 async def read_root():
@@ -49,9 +42,8 @@ async def generate_signup_token_for_admin(emailbody: dict):
 async def create_admin_route(admin: dict, db: Session = Depends(get_db)):
     try:
         created_admin = await create_admin_controller(db, admin)
-        if created_admin:
-            return created_admin
-        else:
-            raise HTTPException(status_code=400, detail="An error occurred")
+        return created_admin
+    except HTTPException as e:
+        raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")

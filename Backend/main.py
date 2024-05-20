@@ -41,6 +41,7 @@ def reset_daily_payments():
         print(f"Sitters' daily payments reset successfully at {datetime.now()}.")
     except requests.RequestException as e:
         print(f"Failed to reset sitters' daily payments: {e}")
+        
 # Defining the task
 def reset_sitter_status():
     try:

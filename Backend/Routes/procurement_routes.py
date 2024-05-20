@@ -1,16 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from Models.models import ProcurementItem, Sales
-from Connections.connections import SessionLocal
+from Connections.connections import get_db
 from Schemas.schemas import ProcurementItemCreate, SaleCreate
 from typing import List
+
 router = APIRouter()
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.post("/items")
 async def create_procurement_item(item: dict, db: Session = Depends(get_db)):
