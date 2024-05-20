@@ -269,6 +269,30 @@ class Sales(Base):
 
 ProcurementItem.sales = relationship("Sales", order_by=Sales.id, back_populates="item")
 
+class AdminResetToken(Base):
+    __tablename__ = 'admin_reset_token'
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    token = Column(String, unique=True, index=True)
+    created_at = Column(DateTime, default=datetime.now)
+    admin_id = Column(Integer, ForeignKey('admin.id'))
+    status = Column(String, default="False")
+
+    admin = relationship("Admin", backref="reset_tokens")
+
+    @staticmethod
+    def create_token(db_session, email, admin_id):
+        from uuid import uuid4
+        token = str(uuid4())
+        new_token = AdminResetToken(
+            email=email,
+            token=token,
+            admin_id=admin_id
+        )
+        db_session.add(new_token)
+        db_session.commit()
+        return token
+
 Base.metadata.create_all(engine)
 # Base.metadata.drop_all(engine)
 

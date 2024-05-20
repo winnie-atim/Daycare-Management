@@ -1,4 +1,4 @@
-from Models.models import Admin, AdminSignUpToken
+from Models.models import Admin, AdminSignUpToken, AdminResetToken
 from fastapi import APIRouter, HTTPException
 from sqlalchemy.orm import Session
 from Connections.connections import session
@@ -6,6 +6,7 @@ from Connections.tokens_and_keys import (
     EMAIL,
     EMAIL_PASSWORD
 )
+from datetime import datetime, timedelta
 from hashing import Harsher
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -143,3 +144,75 @@ async def login_admin(db_session: Session, admin_credentials):
             }
         else:
             raise HTTPException(status_code=401, detail="Invalid password")
+        
+async def generate_reset_token(db: Session, email: str):
+    try:
+        admin = db.query(Admin).filter(Admin.email == email).first()
+        if not admin:
+            raise Exception("Email not found")
+
+        token = AdminResetToken.create_token(db, email, admin.id)
+        if token:
+            send_reset_email(email, token)
+            return True
+        else:
+            raise Exception("Token not created")
+    except Exception as e:
+        db.rollback()
+        print(f"Error occurred: {e}")
+        return False
+
+def send_reset_email(email: str, token: str):
+    msg = MIMEMultipart()
+    msg['From'] = EMAIL
+    msg['To'] = email
+    msg['Subject'] = "Password Reset Request"
+    body = f"Click on the link to reset your password: http://127.0.0.1:5500/public/html/changePassword.html?token={token}"
+    msg.attach(MIMEText(body, 'plain'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(EMAIL, EMAIL_PASSWORD)
+    text = msg.as_string()
+    server.sendmail(EMAIL, email, text)
+    server.quit()
+
+def reset_password(db: Session, token: str, new_password: str):
+    try:
+        valid_token = validate_reset_token(db, token)
+        if not valid_token:
+            raise HTTPException(status_code=400, detail="Invalid or expired token")
+
+        admin = db.query(Admin).filter_by(email=valid_token.email).first()
+        if not admin:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        admin.password = Harsher.get_hash_password(new_password)
+        valid_token.status = "True"  # Mark token as used
+        db.commit()
+        return {"message": "Password reset successfully", "status_code": 200}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+
+def validate_reset_token(db: Session, token: str):
+    try:
+        token_record = db.query(AdminResetToken).filter(
+            AdminResetToken.token == token,
+            AdminResetToken.status == "False"
+        ).first()
+
+        if token_record:
+            token_validity_period = timedelta(hours=24)
+            token_age = datetime.now() - token_record.created_at
+
+            if token_age <= token_validity_period:
+                return token_record
+            else:
+                print(f"Token {token} has expired.")
+                return None
+        else:
+            print(f"No valid token found for token {token}.")
+            return None
+    except Exception as e:
+        print(f"Exception during token validation for token {token}: {e}")
+        return None
