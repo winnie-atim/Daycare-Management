@@ -140,7 +140,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 religion: document.getElementById('religion').value.trim(),
                 level_of_education: document.getElementById('level_of_education').value.trim()
             };
-    
+             const ninLength = formData.NIN.length;
+            if (ninLength !== 13 && ninLength !== 14 && ninLength !== 15) {
+                showNotification('Please enter a valid NIN', 'error');
+                return;
+            }
             fetch('https://daycare-management.onrender.com/auth/sitter_signup', {
                 method: 'POST',
                 headers: {
