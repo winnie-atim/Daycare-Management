@@ -13,13 +13,20 @@ async def create_procurement_item(item: dict, db: Session = Depends(get_db)):
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
-    return db_item
+    return {
+        "status_code": 200,
+        "message": "Item created successfully",
+        "data": db_item
+    }
 
 @router.get("/items")
 async def read_procurement_items(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     items = db.query(ProcurementItem).offset(skip).limit(limit).all()
-    return items
-
+    return {
+        "status_code": 200,
+        "message": "Items retrieved successfully",
+        "data": items
+    }
 @router.post("/sales")
 async def create_sale(sale: dict, db: Session = Depends(get_db)):
     db_sale = Sales(**sale)
