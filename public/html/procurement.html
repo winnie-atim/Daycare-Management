@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Procurement Corner</title>
     <style>
         /* .form-container {
-            width: 50%;
+            width: 80%;
             margin: auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         } */
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
         .form-control, .form-select {
             width: 100%;
             padding: 10px;
@@ -21,6 +26,7 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+
         .btn-primary {
             background-color: #4CAF50;
             color: white;
@@ -29,35 +35,55 @@
             border-radius: 4px;
             cursor: pointer;
             float: right;
-            margin-left: 10px;
         }
+
         .btn-primary:hover {
             background-color: #45a049;
         }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .notification.show {
+            display: block;
+        }
     </style>
+    <title>Procurement Corner</title>
 </head>
 <body>
     <div class="form-container">
         <h2 class="header">Procurement Corner</h2>
         <form id="procurementForm">
-            <input type="text" class="form-control" id="itemName" placeholder="Item Name">
-            <input type="text" class="form-control" id="category" placeholder="Category">
-            <input type="number" class="form-control" id="quantity" placeholder="Quantity">
-            <input type="number" class="form-control" id="price" placeholder="Price">
+            <input type="text" class="form-control" id="itemName" placeholder="Item Name" required>
+            <input type="text" class="form-control" id="category" placeholder="Category" required>
+            <input type="number" class="form-control" id="quantity" placeholder="Quantity" required>
+            <input type="number" class="form-control" id="price" placeholder="Price" required>
             <button type="button" class="btn btn-primary" onclick="createProcurementItem()">Add Item</button>
         </form>
     </div>
     <div class="form-container">
         <h2 class="header">Sell Item</h2>
         <form id="salesForm">
-            <input type="number" class="form-control" id="itemId" placeholder="Item ID">
-            <input type="number" class="form-control" id="quantitySold" placeholder="Quantity Sold">
-            <input type="number" class="form-control" id="totalAmount" placeholder="Total Amount">
+            <select class="form-control" id="itemSelect" required>
+                <option value="" disabled selected>Select Item</option>
+            </select>
+            <input type="number" class="form-control" id="quantitySold" placeholder="Quantity Sold" required>
+            <input type="number" class="form-control" id="totalAmount" placeholder="Total Amount" required>
             <button type="button" class="btn btn-primary" onclick="createSale()">Sell Item</button>
         </form>
     </div>
     <div id="notification" class="notification"></div>
-    <script src="../js/procurement.js"></script>  
-    <!-- <script src="procurement.js"></script> -->
+    <script src="https://daycare-management.vercel.app/js/procurement.js"></script>
 </body>
 </html>
+
+
