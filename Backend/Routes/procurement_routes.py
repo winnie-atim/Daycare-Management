@@ -23,14 +23,18 @@ async def read_procurement_items(skip: int = 0, limit: int = 10, db: Session = D
 @router.post("/sales")
 async def create_sale(sale: dict, db: Session = Depends(get_db)):
     db_sale = Sales(**sale)
-    item = db.query(ProcurementItem).filter(ProcurementItem.id == sale.item_id).first()
+    item = db.query(ProcurementItem).filter(ProcurementItem.id == sale['item_id']).first()
     if item:
-        if item.quantity < sale.quantity_sold:
+        if item.quantity < int(sale['quantity_sold']):
             raise HTTPException(status_code=400, detail="Not enough items in stock")
-        item.quantity -= sale.quantity_sold
+        item.quantity -= int(sale['quantity_sold'])
         db.add(db_sale)
         db.commit()
         db.refresh(db_sale)
-        return db_sale
+        return {
+            "status_code": 200,
+            "message": "Sale created successfully",
+            "data": db_sale
+        }
     else:
         raise HTTPException(status_code=404, detail="Item not found")
