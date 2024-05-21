@@ -268,7 +268,6 @@ class Sales(Base):
     item = relationship("ProcurementItem", back_populates="sales")
 
 ProcurementItem.sales = relationship("Sales", order_by=Sales.id, back_populates="item")
-
 class AdminResetToken(Base):
     __tablename__ = 'admin_reset_token'
     id = Column(Integer, primary_key=True, index=True)
